@@ -1,0 +1,184 @@
+﻿@model UOS.Models.UserClassesReg.AffiliationNotification
+
+@{
+    ViewBag.Title = "NotificationAttachment";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+    @using (Html.BeginForm("NotificationAttachment", "Registration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container bg-white " style="padding:20px;">
+            <h6 class="mt-2">PLEASE UPLOAD YOR LETEST AFFILIATION NOTIFICATION</h6>
+            <hr class="my-2" />
+            <div class="row">
+                <div class="form-group col-md-9 col-sm-9 float-left">
+                    @Html.LabelFor(reg => reg.FileName, new { @class = "form-check-label label" })
+                    <input type="file" name="ImageFile"  />
+                </div>
+                <div class="form-group col-md-3 col-sm-3 foat-right">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Upload </button>
+                </div>
+            </div>
+            <div class="row card-body">
+                <img id="notification_image" class="img-fluid" alt="No file Uploaded" />
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 float-right btn-sm" href="~/Registration/Granted_cources"> Next </a>
+                </div>
+            </div>
+        </div>
+     
+    }
+
+<!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Admission Year</h5>
+                   
+                </div>
+                <div class="modal-body">
+                    @Html.DropDownListFor(reg => reg.yearID, new SelectList(Model.yeardd, "ID", "Aff_Year"), new { @class = "form-control form-control-sm ",@Id="Year_ID" })
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+        {
+            <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+        }
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+        if (!string.IsNullOrEmpty(ViewBag.Exception))
+        {
+            <script type="text/javascript">toastr.error("@ViewBag.Exception ")</script>
+        }
+    }
+<script src="~/Scripts/toastr.min.js"></script>
+<script src="~/Scripts/DataTables/dataTables.bootstrap4.js"></script>
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+
+
+
+<script>
+
+    $.ajax({
+        type: 'GET',
+        url: '@Url.Action("pop_notification_image", "Registration")',
+        dataType: "json",
+        dataSrc: "",
+        success: function (data, type, row) {
+            //console.log(row);
+            //console.log(type);
+            //console.log(data);
+            console.log(data[0].FileName);
+            //alert(data.FileName);
+            //$("#notification_image").src(data[0].FileName);
+            $("#notification_image").attr('src', data[0].FileName);
+        },
+        error: function () {
+            alert('error');
+        },
+    });
+    
+    $(document).ready(function () {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $("#loginModal").modal('show');
+
+            $("#Year_ID").change(function (){
+
+
+
+                var year_ID = parseInt($("#Year_ID").val());
+
+                if (year_ID > 0) {
+                                // Session['year_id'] = year_ID;
+                              //   alert(year_ID);
+                    //$("#loginModal").modal('hide');
+                            // return RedirectToAction("Granted_cources", "Registration");
+                            @*var url = '@Url.Action("Granted_cources", "Registration")';
+                            window.location.href = url;*@
+
+
+                    $.ajax({
+                                    url: '../Registration/Notifection_Verify?parameterValue=' + year_ID,
+                                    type: 'GET',
+                                    datatype: 'application/json',
+                                    contentType: 'application/json',
+                        success: function (data) {
+                            alert("Success");
+                           //// $("#Prog_Name").html("");
+                            console.log(data);
+                            $(data).each(function (index, obj) {
+
+                                alert(obj.url);
+                                //window.location.href = obj.redirectUrl;
+
+
+                            });
+
+
+                        },
+                        error: function () { alert('A error'); }
+
+                               $("#loginModal").modal('hide');
+                    });
+                }
+        });
+    });
+    
+
+</script>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            //$("#loginModal").modal('show');
+            //$("#Year_ID").change(function () {
+            //  var year_ID = parseInt($("#Year_ID option:selected").val());
+            //  if (year_ID > 0) {
+            //        $.ajax({
+            //            url: '../Registration/Notifection_Verify?parameterValue=' + year_ID,
+            //            type: 'GET',
+            //            datatype: 'application/json',
+            //            contentType: 'application/json',
+            //            success: function (data) {
+            //                alert("Success");
+            //                console.log(data);
+            //            },
+            //            error: function () { alert('error'); },
+            //        });
+            //        $("#loginModal").modal('hide');
+            //    }
+            //});
+           
+        });
+    </script>
+}
+

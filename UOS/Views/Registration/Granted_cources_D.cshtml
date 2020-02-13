@@ -1,0 +1,205 @@
+﻿@model UOS.Models.UserClassesReg.Granted_courses_cls
+@{
+    ViewBag.Title = "Granted_cources_D";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+<div class="container bg-white " style="padding:20px;">
+    <h6 class="mt-2">SELECT THE DISCIPLINE FOR DROPED STUDENTS</h6>
+    <hr class="my-3" />
+    <div class="row">
+        @Html.HiddenFor(reg => reg.AppId)
+        <div class="form-group col-md-3 col-sm-3 ">
+            @Html.LabelFor(m => m.category, new { @class = "form-check-label label" })
+            @Html.DropDownListFor(m => m.category, new SelectList(Model.objCat, "ID", "App_Program_Catg"), new { @class = "form-control form-control-sm", @id = "ddlcat" })
+        </div>
+        <div class="form-group col-md-8 col-sm-6">
+            @Html.LabelFor(m => m.discipline, new { @class = "form-check-label label" })
+            @Html.DropDownListFor(m => m.discipline, new SelectList(Model.objprogram, "program_id", "program_Desc"), "---Select Program---", new { @class = "form-control form-control-sm", @id = "ddlProgram" })
+        </div>
+        <div class="form-group col-md-8 col-sm-6">
+            @*@Html.LabelFor(m => m.GrantedSeats, new { @class = "form-check-label label displayNone" })
+            @Html.TextBoxFor(m => m.GrantedSeats, new { style = "display: none;", @id = "grantedseats", @class = "form-control form-control-sm displayNone", @readonly = "readonly" })*@
+        </div>
+        <div class="form-group col-md-1 col-sm-3">
+            <button id="btn_show" class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Show </button>
+        </div>
+    </div>
+
+    <div class="row table-responsive table-responsive-sm mx-auto">
+        <table id="completeStu" class="w-100 table table-hover nowrap table-condensed table-sm">
+            <thead class="bg-primary1">
+                <tr class="label text-white" style="height:40px;">
+                    <th class="align-middle">Name</th>
+                    <th class="align-middle">Gardian name</th>
+                    <th class="align-middle">CNIC</th>
+                    <th class="align-middle">Contact</th>
+                    <th class="align-middle">Address</th>
+                    <th class="align-middle">Active Student</th>
+                    <th class="align-middle">Remove</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+</div>
+
+@{
+    if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+    }
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+    if (TempData["Exception"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+    }
+}
+
+<script src="~/Scripts/toastr.min.js"></script>
+
+@section scripts{
+    <script>
+        $(document).ready(function () { 
+
+            //change event for populate cources wrt catogery
+            $('#ddlcat').change(function () {
+                $("#grantedseats").val(0);
+                getcourse();
+            });
+
+            // get cources function
+            function getcourse() {
+                var val;
+                var cat = $("#ddlcat option:selected").val();
+                //if (cat === 'Anual') {
+                //    val = true;
+                //}
+                //else {
+                //    val = false;
+                //}
+                $.ajax
+                ({
+                    url: '../Registration/Pop_program',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        val: +cat
+                    }),
+                    success: function (result) {
+                        $("#ddlProgram").html("");
+                        $("#ddlProgram").append($('<option ></option>').html("---Select Program---"))
+                        $.each($.parseJSON(result), function (i, obj) {
+                            $("#ddlProgram").append($('<option></option>').val(obj.Program_ID).html(obj.Program_Desc))
+                        })
+                    },
+                    error: function () {
+                        toastr.error("Something went wrong..");
+                    },
+                });
+            }
+
+
+            // show data table for students
+            $("#btn_show").click(function () {
+                var applicationid = '@Html.Raw(Json.Encode(Model.AppId))';
+                var programid = ($("#ddlProgram").val());
+                $.ajax
+                ({
+                    url: '../Registration/DropedStuDtblViewer',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        applicationid: +applicationid,
+                        programId: +programid
+                    }),
+                    success: function (result) {
+                        createTable(result);
+                    },
+                    error: function () {
+                        toastr.error("Something went wrong..");
+                    },
+                });
+            });
+
+
+            // create table function for completed students
+            function createTable(dataSet) {
+                var dtbl = $('#completeStu').DataTable();
+                dtbl.destroy();
+
+                $('#completeStu').DataTable({
+                    processing: true,
+                    data: dataSet,
+                    columns:
+                            [
+                   {
+                       data: "st_name"
+                   },
+                   {
+                       data: "Gardian_name"
+                   },
+                   {
+                       data: "st_cinc"
+                   },
+                   {
+                       data: "st_contact"
+                   },
+                   {
+                       data: "st_address"
+                   },
+                   {
+                       render: function (data, type, row) {
+
+                           return '<button class="btn btn-success btn-rounded btn-sm py-0 px-2 vsmall" id="btn_active" data-st-id="' + row.st_id + '">Active Student</button>'
+                       }
+                   },
+                   {
+                       render: function (data, type, row) {
+
+                           return '<button class="btn btn-danger btn-rounded btn-sm py-0 px-2 vsmall" id="btn_remove" data-st-id="' + row.st_id + '">Remove</button>'
+                       }
+                   }
+
+                            ]
+                });
+            }
+
+            // Active student from return
+            $("#completeStu").on("click", "#btn_active", function (e) {
+                e.preventDefault();
+                var id = $(this).attr("data-st-id");
+                $.ajax({
+                    url: "../Registration/ActiveStuFromReturn?id=" + id,
+                    type: "GET",
+                    success: function (data) {
+                        toastr.success(data.responseText);
+                        $("#btn_show").click();
+                    }
+                });
+            });
+
+            $("#incompleteStu").on("click", "#btn_remove", function (e) {
+                e.preventDefault();
+                var id = $(this).attr("data-institute-id");
+                $.ajax({
+                    url: "../Registration/RemoveIncompleteStudent?id=" + id,
+                    type: "GET",
+                    success: function (data) {
+                        toastr.success(data.responseText);
+                        $("#btn_show").click();
+                    }
+                });
+            });
+
+
+            // ready function Ending
+        });
+    </script>
+}

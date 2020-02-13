@@ -1,0 +1,67 @@
+﻿@using UOS.Models;
+@using Microsoft.AspNet.Identity;
+
+  @if (User.IsInRole("User"))
+    {
+<div class="collapse navbar-collapse mx-md-5" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Registration
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="~/Registration/NotificationAttachment">Get Registration</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="~/Registration/Granted_cources_I">Incomplete Students</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="~/Registration/Granted_cources_D">Droped Students</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="~/Registration/Granted_cources_R">Send Return</a>
+            </div>
+        </li>
+
+        <li class="nav-item dropdown ">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Return Status
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="~/Registration/ReturnStatus">pending For Upload Challan</a>
+                <a class="dropdown-item" href="~/Registration/returnPendingChallanVerify">Pending For Verify Challan</a>
+                <a class="dropdown-item" href="~/Registration/VerifiedChallan">Verified Challan</a>
+                <a class="dropdown-item" href="~/Registration/VerifiedReturn">Verified Return</a>
+            </div>
+        </li>
+        
+    </ul>
+    <ul class="nav justify-content-end mr-md-5">
+        @if (Request.IsAuthenticated)
+        {
+            <li class="nav-item navv">
+                <a class="nav-link text-white"><strong>@User.Identity.GetUserName()</strong></a>
+            </li>
+            <li class="nav-item navv"><a class="nav-link text-white font-weight-bold" href="~/accounts/logout">LogOut</a></li>
+        }
+    </ul>
+</div>
+    }
+    @if(User.IsInRole("AcadBranch"))
+    {
+        
+        <div class="collapse navbar-collapse mx-md-5" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+    </ul>
+    <ul class="nav justify-content-end mr-md-5">
+        @if (Request.IsAuthenticated)
+        {
+            <li class="nav-item navv">
+                <a class="nav-link text-white"><strong>@User.Identity.GetUserName()</strong></a>
+            </li>
+            <li class="nav-item navv"><a class="nav-link text-white font-weight-bold" href="~/accounts/logout">LogOut</a></li>
+        }
+    </ul>
+</div>        
+        
+        
+    }

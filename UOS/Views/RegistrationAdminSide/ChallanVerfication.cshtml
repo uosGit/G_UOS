@@ -1,0 +1,178 @@
+﻿
+@{
+    ViewBag.Title = "ChallanVerfication";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+
+<div class="container bg-white">
+    @using (Html.BeginForm("ChallanVerfication", "RegistrationAdminSide"))
+    {
+        @*Main Heading In the Page*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="p-3">
+                    <h3 style="text-align: center; font-family: 'Century Schoolbook';">UNIVERSITY OF SARGODHA</h3>
+                    <hr />
+                    <h5 style="text-align: center; font-family: 'Century Schoolbook';">FEE CHALLAN VERIFICATION</h5>
+                </div>
+            </div>
+        </div>
+        @*   Details Of The Student*@
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-dark ml-3 label">College Name:</label>
+                                        
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="  ml-2 u-text border-bottom border-secondary">@Model.clg_name</label>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-dark ml-3 label">Program: </label>
+                                 
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="  ml-2 border-bottom border-secondary">@Model.program</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-dark ml-3 label ">Fee Slip ID:</label>
+                           
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="  ml-2 border-bottom border-secondary">@Model.fee_slip</label>
+                                </div>
+                            </div>
+                          
+                        </div>
+                        @*<div class="col-md-12">
+                                <label class="text-dark label ml-3 ">District:</label> <label class="  ml-2 border-bottom border-secondary">@Model.District</label>
+                            </div>*@
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-dark label ml-3">Acccount No: </label>
+                                 
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="  ml-2 border-bottom border-secondary">@Model.account_no</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="text-dark label pl-3">Amount: </label>
+                           
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="  ml-2 border-bottom border-secondary">@Model.amount</label>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    <hr />
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="text-dark ml-3 label">Bank Name:</label>
+                             
+                            </div>
+                            <div class="col-md-8">
+                                <label class="  ml-2 u-text border-bottom border-secondary" id="Bank_baranch">@Model.bnk_name</label>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="text-dark ml-3 label">Branch Code: </label>
+                          
+                            </div>
+                            <div class="col-md-8">
+                                <label class="  ml-2 border-bottom border-secondary">@Model.b_code</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="text-dark ml-3 label ">Deposite Date:</label>
+                            
+                            </div>
+                            <div class="col-md-8">
+                                <label class="  ml-2 border-bottom border-secondary" id="recv_date">@Model.deposite_date</label>
+                            </div>
+                        </div>
+                       
+                    </div>
+
+
+                    </div>
+                    
+                </div>
+          
+            <div class="col-md-6">
+                
+                @*chllan pic here*@
+                <img id="Pic_image" alt="Fee Slip Scan Not Upload" class="img-fluid img-responsive h-50 w-50" src="@Model.ImageSource" />
+
+
+            </div>
+
+            <div class="col-md-12 text-center my-4">
+                @*<a class="btn btn-success btn-rounded  mt-2 px-5  btn-sm text-center" href="#" id="btsub"> Submit </a>*@
+                <button type="submit" class="btn btn-success btn-rounded  mt-2 px-5  btn-sm text-center" id="btsub">Verify</button>
+            </div>
+        </div>
+
+
+    }
+
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btsub').prop('disabled', true);
+            var vlue = $('#Bank_baranch').text();
+            if (vlue == '') {
+                $("#recv_date").remove();
+            }else
+            {
+                $('#btsub').prop('disabled', false);
+            }
+            
+            @*@{  
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                var json = serializer.Serialize(Model);
+    }
+
+            var model = @Html.Raw(json);
+            if(model != null && @Html.Raw(json) != "undefined")
+            {
+                var id= model.Id;
+                var mainFloorPlanId = model.MainFloorPlanId ;
+                var imageDirectory = model.ImageDirectory ;
+                var iconsDirectory = model.IconsDirectory ;
+            }*@
+        });
+    </script>
+}

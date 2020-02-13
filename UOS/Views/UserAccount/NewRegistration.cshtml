@@ -1,0 +1,137 @@
+﻿
+@model UOS.Models.UserClasses.NewRegistration
+@{
+    ViewBag.Title = "NewRegistration";
+}
+<a href="~/Views/UserAccount/NewRegistration.cshtml">~/Views/UserAccount/NewRegistration.cshtml</a>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Registration Form</title>
+</head>
+<body class=" form-control-sm">
+  @using (Html.BeginForm("NewRegistration", "UserAccount"))
+    {
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-md-9 col-lg-7 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h3 class="card-title text-center" style="font-weight:600;">Registration</h3>
+                            <hr class="my-4" />
+                            <div class="form-signin">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.institute_Name, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.institute_Name, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.institute_code, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.institute_code, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.principal_Name, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.principal_Name, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.ins_landline, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.ins_landline, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+
+                                        @Html.LabelFor(reg => reg.ins_Fax_No, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.ins_Fax_No, new { @class = "form-control form-control-sm" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.principal_contact, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.principal_contact, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(reg => reg.email, new { @class = "form-check-label label" })
+                                    @Html.TextBoxFor(reg => reg.email, new { @class = "form-control form-control-sm" })
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.country, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.country, new { @class = "form-control form-control-sm" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.province, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.province, new { @class = "form-control form-control-sm" })
+                                    </div>
+
+                                </div>
+                              
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.district, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.district, new { @class = "form-control form-control-sm" })
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.tehsil, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.tehsil, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(reg => reg.postal_address, new { @class = "form-check-label label" })
+                                    @Html.TextBoxFor(reg => reg.postal_address, new { @class = "form-control form-control-sm" })
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.RadioButtonFor(reg => reg.is_gov, "Government")
+                                        <label for="is_gov" class="label">Government</label>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.RadioButtonFor(reg => reg.is_gov, "Private")
+                                        <label for="is_gov" class="label">Private</label>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.username, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.username, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.password, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.password, new { @class = "form-control form-control-sm" })
+                                    </div>
+                                </div>
+
+                                    <button class="btn btn-primary btn-block text-uppercase mt-4 btn-sm">Submit</button>
+                                    <hr class="my-4" />
+                                
+                                    <a class="d-block text-center mt-2" href="Login_User.aspx">Sign In</a>
+
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    }
+    </body>
+
+</html>

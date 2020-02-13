@@ -1,0 +1,237 @@
+﻿@model UOS.Models.UserClasses.TeachingStaff
+@{
+    ViewBag.Title = "TeachingStaff";
+}
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Staff Form</title>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="container-fluid bg-light form-control-sm ">
+    
+        <div class="container bg-white " style="padding:20px;">
+@using (Html.BeginForm("TeachingStaff", "UserAccount"))
+{
+            <h6 class="mt-2">STATEMENT OF TEACHING STAFF</h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.name, new { @class = "form-check-label label " })
+                    @Html.TextBoxFor(reg => reg.name, new { @class = "form-control form-control-sm", @placeholder = "Name ", @required = "true" })
+                    @Html.ValidationMessageFor(reg => reg.name)
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.uni, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.uni, new { @class = "form-control form-control-sm", @placeholder = "Institute Name", @required = "true" })
+                    @Html.ValidationMessageFor(reg => reg.uni)
+                </div>
+
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.subject, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.subject, new { @class = "form-control form-control-sm", @placeholder = "Degree Program", @required = "true" })
+                    @Html.ValidationMessageFor(reg => reg.subject)
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.naturename, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.naturename, new SelectList(Model.Nature, "Nature_Desc", "Nature_Desc"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.salary, new { @class = "form-check-label  label" })
+                    @Html.TextBoxFor(reg => reg.salary, new { @class = "form-control form-control-sm", @placeholder = "Salley in Institute", @required = "true", @type = "number" })
+                    @Html.ValidationMessageFor(reg => reg.salary)
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.experiencename, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.experiencename, new SelectList(Model.Experience, "Experience_Duration", "Experience_Duration"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.appoint_date, new { @class = "form-check-label  label" })
+                    <input id="datepicker" name="appoint_date" class="form-control form-control-sm" />
+                    @Html.ValidationMessageFor(reg => reg.appoint_date)
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.degreeName, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.degreeName, new SelectList(Model.Degree, "Degree_Description", "Degree_Description"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.designationname, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.designationname, new SelectList(Model.Designation, "Designation", "Designation"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.pass_yearname, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.pass_yearname, new SelectList(Model.Year, "Year", "Year"), new { @class = "form-control form-control-sm" })
+                </div>
+
+
+            </div>
+
+            <div class="row">
+
+
+                <div class="form-group col-md-6 col-sm-6">
+                    @Html.LabelFor(reg => reg.remarks, new { @class = "form-check-label  label" })
+                    @Html.TextBoxFor(reg => reg.remarks, new { @class = "form-control form-control-sm", @placeholder = "Remarks About This Staff Member", @required = "true"  })
+                    @Html.ValidationMessageFor(reg => reg.remarks)
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="teachingtable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <th class="align-middle">Employe Name</th>
+                            <th class="align-middle">Degree</th>
+                            <th class="align-middle">Passing Year</th>
+                            <th class="align-middle">Salary</th>
+                            <th class="align-middle">Subject</th>
+                            <th class="align-middle">Nature</th>
+                            <th class="align-middle">Experience</th>
+                            <th class="align-middle">Designation</th>
+                            <th class="align-middle">Remarks</th>
+                            <th class="align-middle">Update</th>
+                            <th class="align-middle">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+}
+            <div class="row">
+
+                <div class="col-md-12">
+@using (Html.BeginForm("DownloadTeachingDetail", "UserAccount"))
+{
+           <button class="btn btn-primary btn-rounded  mt-2 float-right btn-sm"> Download Form After Finalizing This Form </button>
+}                </div>
+
+            </div>
+            <hr class="my-3" />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/NonTeachingStaff"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/SportsDetail"> Previous </a>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+   
+
+    @{
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+        if (TempData["Exception"]!= null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+        }
+    }
+   
+    @section Scripts {
+    <script type="text/javascript">
+       
+        $('#datepicker').datepicker({
+            uiLibrary: 'bootstrap4',
+            format: 'dd-mm-yyyy'
+        });
+    </script>
+
+        <script>
+            $(document).ready(function () {
+                
+                $("#teachingtable").on("click", "#btn_delete", function (e) {
+                    
+                    e.preventDefault();
+                    var id = $(this).attr("data-info-id");
+                    $.ajax({
+                        url: "../UserAccount/RemoveTeachingStaff?id="+id,
+                        method: "GET",
+                        success: function (data) {
+                            table.ajax.reload();
+                            toastr.success(data.responseText);
+                        }
+                    });
+                });
+                var table = $("#teachingtable").DataTable({
+                    "ordering": false,
+                    ajax: {
+                        url: "../UserAccount/TStaffDataTableViewer",
+                        dataSrc:""
+                    },
+                    columns: [
+                        {
+                            data: "Name"
+                        },
+                        {
+                            data: "Degree"
+                        },
+                        {
+                            data:"Passing_Year"
+                        },
+                        {
+                            data:"Salary"
+                        },
+                        {
+                            data: "Subject"
+                        },
+                        {
+                            data:"Nature"
+                        },
+                        {
+                            data:"Experience"
+                        },
+                        {
+                            data:"Designation"
+                        },
+                        {
+                            data:"Remarks"
+                        },
+                        {
+                            render: function (data, type, row) {
+                                return "<a class='btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall' href='../UserAccount/TeachingStaffUpdate?id="+row.Employee_ID+"' id='btn_update' data-info-id='" + row.Employee_ID + "' >Update</a>"
+                            }
+                        },
+                        {
+                            render: function (data, type, row) {
+                                return "<button class='btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall' id='btn_delete' data-info-id='" + row.Employee_ID + "' >Remove</button>"
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+        <script>
+            $('#datepicker').datepicker({
+                uiLibrary: 'bootstrap4', format: 'dd-mm-yyyy'
+            });
+        </script>
+    }
+
+</body>
+
+</html>
+
+
+

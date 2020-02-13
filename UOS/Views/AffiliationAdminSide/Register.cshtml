@@ -1,0 +1,197 @@
+﻿@model UOS.Models.AffiInsRegisteration
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+
+@using (Html.BeginForm("Register", "AffiliationAdminSide"))
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header bg-ash text-center text-primary font-weight-bold">CREATE NEW INSTITUTE LOGIN</div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.InstCode)
+                            @Html.TextBoxFor(m => m.InstCode, new { @class = "form-control-sm w-100-sm w-100", @id = "InstCode" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.InstName)
+                            @Html.TextBoxFor(m => m.InstName, new { @class = "form-control-sm w-100", @id = "InstName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PrincipalName)
+                            @Html.TextBoxFor(m => m.PrincipalName, new { @class = "form-control-sm w-100", @id = "InstPrincipalName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PTCL)
+                            @Html.TextBoxFor(m => m.PTCL, new { @class = "form-control-sm w-100", @id = "Ptcl" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.FaxNo)
+                            @Html.TextBoxFor(m => m.FaxNo, new { @class = "form-control-sm w-100", @id = "FaxNo" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email)
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control-sm w-100", @id = "EmailAdd" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PrincipalContact)
+                            @Html.TextBoxFor(m => m.PrincipalContact, new { @class = "form-control-sm w-100", @id = "PrincContact" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.PostalAddress)
+                            @Html.TextBoxFor(m => m.PostalAddress, new { @class = "form-control-sm w-100", @id = "PostalAddress" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.OfficMoble)
+                            @Html.TextBoxFor(m => m.OfficMoble, new { @class = "form-control-sm w-100", @id = "oficemobile" })
+                        </div>
+                        <div class="form-group">
+                            @Html.RadioButtonFor(model => model.InstituteType, "Government", new { @checked = true })@Html.Label("Government")
+                            @Html.RadioButtonFor(model => model.InstituteType, "Private")@Html.Label("Private")
+
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.UserName)
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control-sm w-100", @id = "UserName" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password)
+                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control-sm w-100", @id = "Password" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ConfirmPassword)
+                            @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control-sm w-100", @id = "CPassword" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(reg => reg.DistrictId, new { @class = "form-check-label label " })
+                            @Html.DropDownListFor(m => m.DistrictId, new SelectList(Model.DistrictDD, "ID", "Dist_Name"), new { @class = "form-control-sm w-100", @id = "district" })
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(reg => reg.TehsilId, new { @class = "form-check-label label " })
+                            @Html.DropDownListFor(m => m.TehsilId, new SelectList(Model.TehsilDD, "ID", "Tehsils"), new { @class = "form-control-sm w-100", @id = "tehsil" })
+                        </div>
+                       
+                    </div>
+                    <div class="card-header">
+                        <button class="btn-sm btn-success btn btn-block"  id="btnSubmit">Create Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+    </div>
+}
+
+@{
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+
+    if (TempData["Error"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Error"].ToString()")</script>
+    }
+}
+<script src="~/Scripts/toastr.min.js"></script>
+@section scripts{
+<script>
+    $(document).ready(function () {
+        $("#district").change(function () {
+            $("#tehsil").find('option:not(:first-child)').remove();
+            gettehsil();
+        });
+
+        function gettehsil() {
+            var dist = $("#district option:selected").val();
+          
+            $.ajax({
+                url: "../AffiliationAdminSide/selectteshil?value=" + dist,
+                method: "GET",
+                success: function (data) {
+                    console.log(data);
+                    $("#tehsil").append($('<option></option>').val(0).html("--Select Tehsil--"));
+                    $(data).each(function (index, obj) {
+                        $("#tehsil").append($('<option></option>').val(obj.ID).html(obj.Tehsils));
+                    });
+                }
+            });
+        }
+        
+    });
+    </script>
+    <script>
+        $(function () {
+            $("#btnSubmit").click(function () {
+                
+                if ($("#InstCode").val().length < 0) {
+                    toastr.error("Please Enter Institute Code", "Error");
+                    return false;
+                }
+                else if ($("#InstName").val().length < 0) {
+                    toastr.error("Please Enter Institute Name", "Error");
+                    return false;
+                }
+                else if ($("#InstPrincipalName").val().length < 0) {
+                    toastr.error("Please Enter Institute Principal Name", "Error");
+                    return false;
+                }
+                else if ($("#Ptcl").val().length < 0) {
+                    toastr.error("Please Enter Institute PTCL Number", "Error");
+                    return false;
+                }
+                else if ($("#FaxNo").val().length < 0) {
+                    toastr.error("Please Enter Institute Fax No", "Error");
+                    return false;
+                }
+                else if ($("#EmailAdd").val().length < 0) {
+                    toastr.error("Please Enter Institute Email", "Error");
+                    return false;
+                }
+                else if ($("#PrincContact").val().length < 0) {
+                    toastr.error("Please Enter Principal Contact", "Error");
+                    return false;
+                }
+                else if ($("#PostalAddress").val().length < 0) {
+                    toastr.error("Please Enter Institute Postal Address", "Error");
+                    return false;
+                }
+                else if ($("#oficemobile").val().length < 0) {
+                    toastr.error("Please Enter Institute Mobile No", "Error");
+                    return false;
+                }
+                else if ($("#UserName").val().length < 0) {
+                    toastr.error("Please Enter User Name", "Error");
+                    return false;
+                }
+                else if ($("#Password").val().length < 0) {
+                    toastr.error("Please Enter Password", "Error");
+                    return false;
+                }
+                else if ($("#CPassword").val().length < 0) {
+                    toastr.error("Please Enter Confirm Password", "Error");
+                    return false;
+                }
+                else if ($("#district option:selected").text() == "--Select Tehsil--" || $("#district").val() == 0) {
+                    toastr.error("Please Select Distt", "Error");
+                    return false;
+                }
+                else if ($("#district option:selected").text() == "--Select Tehsil--" || $("#district").val() == 0) {
+                    toastr.error("Please Select Distt", "Error");
+                    return false;
+                }
+                else if ($("#tehsil option:selected").text() == "--Select Tehsil--" || $("#tehsil").val() == 0) {
+                    toastr.error("Please Select Tehsil", "Error");
+                    return false;
+                }
+                else {
+                    return true;
+                }
+                return false;
+            });
+        });
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Grant";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+<div>
+    <h4 class="text-center">Grant</h4>
+    <hr />
+    <div class="row table-responsive table-responsive-sm mx-auto">
+        <table id="table" class="w-100 table table-hover nowrap table-condensed table-sm">
+            <thead class="bg-primary1">
+                <tr class="label text-white" style="height:40px;">
+                    <td class="align-middle">Institute Name    </td>
+                    <td class="align-middle">Principal Name    </td>
+                    <td class="align-middle">Postal Address    </td>
+                    <td class="align-middle">Phone Number      </td>
+                    <td class="align-middle">Year              </td>
+                    <td class="align-middle">Nature            </td>
+                    <td class="align-middle">View FeedBack     </td>
+                    <td class="align-middle">Grant Affiliation </td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+</div>
+@section scripts{
+<script>
+    $(document).ready(function () {
+        var table = $("#table").DataTable({
+            ajax: {
+                url: "../AffiliationAdminSide/GrantDataTableViewer",
+                dataSrc: ""
+            },
+            columns: [
+                {
+                    data:"Institute_Name"
+                },
+                {
+                    data:"Principal_Name"
+                },
+                {
+                    data:"postal_Address"
+                },
+                {
+                    data:"phone_No"
+                },
+                {
+                    data:"Year"
+                },
+                {
+                    data:"Nature"
+                },
+                {
+                    render: function (data, type, row) {
+                        return "<a class='btn btn-primary btn-rounded btn-sm py-0 px-2 vsmall' href='../AffiliationAdminSide/ViewFeedBack?id=" + row.Application_ID + "' >View<a/>"
+                    }
+                },
+                {
+                    render: function (data, type, row) {
+                        return "<a class='btn btn-success btn-rounded btn-sm py-0 px-2 vsmall' href='../AffiliationAdminSide/GrantAffiliation?id=" + row.Application_ID + "," + row.Institute_ID + "' >Grant<a/>"
+                    }
+                }
+            ]
+        });
+    });
+</script>
+}

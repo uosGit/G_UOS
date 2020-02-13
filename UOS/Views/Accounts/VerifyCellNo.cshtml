@@ -1,0 +1,17 @@
+﻿@model UOS.Models.TwoFactorAuthentication.LoginVerification
+@{
+    ViewBag.Title = "VerifyCellNo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>VerifyCellNo</h2>
+
+@using (Html.BeginForm("VerifyCellNo", "Accounts"))
+{
+    @Html.HiddenFor(model => model.PhoneNumber)
+    @Html.HiddenFor(model => model.UserId)
+    @Html.LabelFor(model => model.Code)
+    @Html.TextBoxFor(model => model.Code)
+    <hr />
+    <button class="btn-sm btn-success">Verify</button>
+}

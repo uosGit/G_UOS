@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "RecommendedCommittee";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+<div class="row table-responsive table-responsive-sm mx-auto">
+    <table id="rcvisit" class="w-100 table table-hover nowrap table-condensed table-sm">
+        <thead class="bg-primary1">
+            <tr class="label text-white" style="height:40px;">
+                <td class="align-middle">Id          </td>
+                <td class="align-middle">Name        </td>
+                <td class="align-middle">Department  </td>
+                <td class="align-middle">Designation </td>
+                <td class="align-middle">AS          </td>
+                <td class="align-middle">CNIC        </td>
+                <td class="align-middle">Cell        </td>
+                <td class="align-middle">Recommend   </td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div class="col-md-12">
+        <button id="btn_next" class="btn btn-primary btn-rounded px-3 btn-sm">Assign Visit</button>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var ids= {
+                MemberIds:[]
+            }
+            var datatable = $("#rcvisit").DataTable({
+                "proccessing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "../AffiliationAdminSide/RCommitteeDataTableViewer",
+                    "type": "POST",
+                    "datatype": "json",
+                    "dataSrc": ""
+                },
+                "columnDefs": [
+                  {
+                      "targets": [0],
+                      "visible": false,
+                      "searchable": false
+                  }
+                ],
+                "columns": [
+                    {
+                        "data":"ID"
+                    },
+                    {
+                         "data": "Name"
+                    },
+                    {
+                        "data": "Department"
+                    },
+                    {
+                        "data": "Designation"
+                    },
+                    {
+                        "data": "As_Com_Designation"
+                    },
+                    {
+                        "data": "CNIC"
+                    },
+                    {
+                        "data": "Cell"
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return "<input type='checkbox' id='check' value='' />"
+                        }
+                    }
+                ]
+            });//datatable ended here
+            $("#btn_next").click(function () {
+                $("#rcvisit").find('input[type="checkbox"]:checked').each(function (index, rowId) {
+                    var temp = $(this).parent().parent();
+                    var child = datatable.row(temp).data().ID;
+                    ids.MemberIds.push(child);
+                });
+                ids = JSON.stringify(ids);
+                console.log(ids);
+
+                $.ajax({
+                    url: "../AffiliationAdminSide/RCGetSelMembrIds",
+                    method: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: ids,
+                    success: function (response) {
+                        toastr.success(response.responseText);
+                        //alert("syc");
+                        $(location).attr('href', "../AffiliationAdminSide/ApplicationForm");
+                    }
+                });
+            });
+            
+        });
+    </script>
+}
+

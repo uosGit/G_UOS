@@ -1,0 +1,260 @@
+﻿@model UOS.Models.UserClasses.RecurrClass
+@{
+    ViewBag.Title = "RecurrExpenditures";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>RecurrExpenditure Form</title>
+ 
+</head>
+<body class="container-fluid bg-light form-control-sm">
+        <div class="container bg-white " style="padding:20px;">
+            <h6 class="mt-2 mb-3">STATEMENT OF RECURRING EXPENDITURES AND RECEIPTS</h6>
+            <div class="row ">
+                <div class="col-md-12 col-sm-12">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="nav-item">
+                            <a class="nav-link active label label1 text-primary" href="#t1" data-toggle="tab">Receipts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link label label1 text-primary" href="#t2" data-toggle="tab">Expenditures</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-4">
+                        <div class="tab-pane active" id="t1">
+                            @using (Html.BeginForm("RecurrRecipts", "UserAccount", FormMethod.Post))
+                            {
+                                <div class="row">
+
+                                <div class="form-group col-md-3 col-sm-6">
+                                    @Html.LabelFor(reg => reg.s_receiptname, new { @class = "form-check-label  label" })
+                                    @Html.DropDownListFor(m => m.s_receiptname, new SelectList(Model.ReceiptDD, "Description", "Description"), new { @class = "form-control form-control-sm" })
+                                </div>
+                                <div class="form-group col-md-2 col-sm-6">
+                                    @Html.LabelFor(reg => reg.amount, new { @class = "form-check-label label" })
+                                    @Html.TextBoxFor(reg => reg.amount, new { @class = "form-control form-control-sm",  @required = "true", @type = "number" })
+                                    @Html.ValidationMessageFor(reg => reg.amount)
+                                </div>
+                                <div class="form-group col-md-7 col-sm-12">
+                                    <button type="submit" class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                                </div>
+
+                            </div>
+                            }
+                            @*@{
+                                if (TempData["Success"] != null)
+                                {
+                                    <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+                                }
+                                if (TempData["Exception"] != null)
+                                {
+                                    <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+                                }
+                            }*@
+                            <hr class="my-3" />
+                            <div class="row table-responsive table-responsive-sm m-auto">
+                                <table id="recipttable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                                    <thead class="bg-primary ">
+                                        <tr class="label text-white" style="height:40px;">
+                                            <th class="align-middle">Recipt Name</th>
+                                            <th class="align-middle">Amount</th>
+                                            @*<th class="align-middle">Total Amount</th>*@
+                                            <th class="align-middle">Update</th>
+                                            <th class="align-middle">Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <hr class="my-3" />
+                           
+
+                        </div>
+                        <div class="tab-pane" id="t2">
+                            @using (Html.BeginForm("RecurrExpenditure", "UserAccount"))
+                            {
+                                <div class="row">
+
+                                <div class="form-group col-md-3 col-sm-6">
+                                    @Html.LabelFor(reg => reg.s_expenditurename, new { @class = "form-check-label label" })
+                                    @Html.DropDownListFor(m => m.s_expenditurename, new SelectList(Model.ExpenditureDD, "Description", "Description"), new { @class = "form-control form-control-sm" })
+                                </div>
+                                <div class="form-group col-md-2 col-sm-6">
+                                    @Html.LabelFor(reg => reg.amount, new { @class = "form-check-label label" })
+                                    @Html.TextBoxFor(reg => reg.amount, new { @class = "form-control form-control-sm",  @required = "true", @type = "number" })
+                                    @Html.ValidationMessageFor(reg => reg.amount)
+                                </div>
+                                <div class="form-group col-md-7 col-sm-12">
+                                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                                </div>
+
+                            </div>
+                            }
+                            @{
+                                if (TempData["Success"] != null)
+                                {
+                                    <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+                                }
+                                if (TempData["Exception"] != null)
+                                {
+                                    <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+                                }
+                            }
+
+                            <hr class="my-3" />
+                            <div class="row table-responsive table-responsive-sm m-auto">
+                                <table id="expendituretable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                                    <thead class="bg-primary ">
+                                        <tr class="label text-white" style="height:40px;">
+                                            <th class="align-middle">Expenditure Name</th>
+                                            <th class="align-middle">Amount</th>
+                                            @*<th class="align-middle">Total Amount</th>*@
+                                            <th class="align-middle">Update</th>
+                                            <th class="align-middle">Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <hr class="my-3" />
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12">
+@using (Html.BeginForm("DownloadRequirDetail", "UserAccount"))
+{
+                    <button class="btn btn-primary btn-rounded  mt-2 float-right btn-sm"> Download Form After Finalizing This Form </button>
+                }
+                </div>
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/OtherDoc"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/NonRecurring"> Previous </a>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#recipttable").on("click", "#btn_recp_delete", function (e) {
+                e.preventDefault();
+                var id = $(this).attr("data-recp-id");
+                $.ajax({
+                    url: "../UserAccount/RemoveRRecipt?id=" + id,
+                    type: "GET",
+                    success: function (data) {
+                        recipttable.ajax.reload();
+                        toastr.success(data.responseText);
+                    }
+                });
+            });
+
+            //$("#recipttable").on("click", "#btn_recp_update", function () {
+            //    var id = $(this).attr("data-recp-id");
+            //    $(location).attr('href', '/UserAccount/RecurrReceiptsUpdate?id=' + id);
+            //});
+
+            var recipttable = $("#recipttable").DataTable({
+                "ordering": false,
+                ajax: {
+                    url: "../UserAccount/RRecpDataTableViewer",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Description"
+                    },
+                    {
+                        data: "Amount"
+                    },
+                    //{
+                    //    data: "Total_Amount"
+                    //},
+                    {
+                        render: function (data, type, row) {
+                            return "<a class='btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall' href='../UserAccount/RecurrReceiptsUpdate?id="+row.Recipt_ID+"' data-recp-id='" + row.Recipt_ID + "' id='btn_recp_update' >Update</a>"
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return "<button class='btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall' data-recp-id='" + row.Recipt_ID + "' id='btn_recp_delete' >Remove</button>"
+                        }
+                    }
+                ]
+            });
+            //$("#expendituretable").on("click", "#btn_exp_update", function () {
+            //    var id = $(this).attr("data-exp-id");
+            //    $(location).attr('href', '/UserAccount/RecurrExpendituresUpdate?id=' + id);
+            //});
+
+            $("#expendituretable").on("click", "#btn_exp_delete", function (e) {
+                e.preventDefault();
+                var id = $(this).attr("data-exp-id");
+                $.ajax({
+                    url: "../UserAccount/RemoveRExpenditure?id=" + id,
+                    type: "GET",
+                    success: function (data) {
+                        expendituretable.ajax.reload();
+                        toastr.success(data.responseText);
+                    }
+                });
+            });
+
+            var expendituretable = $("#expendituretable").DataTable({
+                "ordering": false,
+                ajax: {
+                    url: "../UserAccount/RExpDataTableViewer",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Description"
+                    },
+                    {
+                        data: "Amount"
+                    },
+                    //{
+                    //    data: "Total_Amount"
+                    //},
+                    {
+                        render: function (data, type, row) {
+                            return "<a class='btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall' href='../UserAccount/RecurrExpendituresUpdate?id="+row.Expence_ID+"' data-exp-id='" + row.Expence_ID + "' id='btn_exp_update' >Update</a>"
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return "<button class='btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall' data-exp-id='" + row.Expence_ID + "' id='btn_exp_delete' >Remove</button>"
+                        }
+                    }
+                ]
+            });
+
+        });
+    </script>
+
+
+
+</body>
+
+</html>
+
+
+
+
+

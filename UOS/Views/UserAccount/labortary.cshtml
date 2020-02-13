@@ -1,0 +1,155 @@
+﻿@model UOS.Models.UserClasses.labortary
+@{
+    ViewBag.Title = "labortary";
+}
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>labortary Form</title>
+
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    
+        <div class="container bg-white " style="padding:20px;">
+@using (Html.BeginForm("labortary", "UserAccount"))
+{
+            <h6 class="mt-2">STATEMENT OF LABOURTARY</h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.sbjct_labname, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.sbjct_labname, new SelectList(Model.LabSubject, "Lab_Description", "Lab_Description"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.item_name, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.item_name, new { @class = "form-control form-control-sm", @placeholder = "Name of item", @required = "true" })
+                    @Html.ValidationMessageFor(reg => reg.item_name)
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.quantity, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.quantity, new { @class = "form-control form-control-sm", @placeholder = "Quantity of item", @required = "true", @type = "number" })
+                    @Html.ValidationMessageFor(reg => reg.quantity)
+                </div>
+                <div class="form-group col-md-4 col-sm-6">
+                    @Html.LabelFor(reg => reg.remarks, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.remarks, new { @class = "form-control form-control-sm", @placeholder = "Remarks About item", @required = "true"  })
+                    @Html.ValidationMessageFor(reg => reg.remarks)
+                </div>
+
+            </div>
+            <div class="row">
+                <div class=" col-md-12 col-sm-12">
+                    <button class="btn btn-primary btn-rounded mt-2 float-right btn-sm"> Add </button>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="labortarytable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <th class="align-middle">Labortary Name</th>
+                            <th class="align-middle">Item Name</th>
+                            <th class="align-middle">Quantity</th>
+                            <th class="align-middle">Remarks</th>
+                            <th class="align-middle">Update</th>
+                            <th class="align-middle">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <hr class="my-3" />
+}
+            <div class="row">
+                <div class="col-md-12">
+@using (Html.BeginForm("DownloadLabortaryDetail", "UserAccount"))
+{
+                    <button class="btn btn-primary btn-rounded  mt-2 float-right btn-sm"> Download Form After Finalizing This Form </button>
+               
+} </div>
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/NonRecurring"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/LibraryOtherDetails"> Previous </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    
+    @{
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+        if (TempData["Exception"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+        }
+    }
+   
+
+                <script>
+                    $(document).ready(function () {
+                        
+
+                        $("#labortarytable").on("click", "#btn_delete", function (e) {
+                            e.preventDefault();
+                            var id = $(this).attr("data-lab-id");
+                            $.ajax({
+                                url: "../UserAccount/RemoveLabortaryDetail?id=" + id,
+                                type: "GET",
+                                success: function (data) {
+                                    table.ajax.reload();
+                                    toastr.success(data.responseText);
+                                }
+                            });
+                        });
+
+                        var table = $("#labortarytable").DataTable({
+                            "ordering": false,
+                            ajax: {
+                                url: "../UserAccount/LabDataTableViewer",
+                                dataSrc: ""
+                            },
+                            columns: [
+                                {
+                                    data: "Lab_Name"
+                                },
+                                {
+                                    data: "Item_Name"
+                                },
+                                {
+                                    data: "Quantity"
+                                },
+                                {
+                                    data: "Remarks"
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        return "<a class='btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall' href='../UserAccount/labortaryUpdate?id="+row.ID+"' id='btn_update' data-lab-id='" + row.ID + "'>Update</a>"
+                                    }
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        return "<button class='btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall' id='btn_delete' data-lab-id='" + row.ID + "'>Remove</button>"
+                                    }
+                                }
+                            ]
+                        });
+                    });
+                </script>
+</body>
+
+</html>
+
+
+

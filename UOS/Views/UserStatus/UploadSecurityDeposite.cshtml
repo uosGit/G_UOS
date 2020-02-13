@@ -1,0 +1,77 @@
+﻿@model UOS.Models.UserClasses.DemandDraft
+@{
+    ViewBag.Title = "UploadSecurityDeposite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UploadSecurityDeposite</h2>
+
+@using (Html.BeginForm("UploadSecurityDeposite", "UserStatus", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+
+        <div class="form-group col-md-3 col-sm-6">
+            @Html.LabelFor(reg => reg.bank_name, new { @class = "form-check-label label" })
+            @Html.TextBoxFor(reg => reg.bank_name, new { @class = "form-control form-control-sm" })
+            @Html.ValidationMessageFor(reg => reg.bank_name)
+        </div>
+        <div class="form-group col-md-3 col-sm-6">
+            @Html.LabelFor(reg => reg.bank_address, new { @class = "form-check-label label" })
+            @Html.TextBoxFor(reg => reg.bank_address, new { @class = "form-control form-control-sm" })
+            @Html.ValidationMessageFor(reg => reg.bank_address)
+        </div>
+        <div class="form-group col-md-3 col-sm-6">
+            @Html.LabelFor(reg => reg.branch_code, new { @class = "form-check-label label" })
+            @Html.TextBoxFor(reg => reg.branch_code, new { @class = "form-control form-control-sm" })
+            @Html.ValidationMessageFor(reg => reg.branch_code)
+        </div>
+        <div class="form-group col-md-3 col-sm-6">
+            @Html.LabelFor(reg => reg.amount, new { @class = "form-check-label label" })
+            @Html.TextBoxFor(reg => reg.amount, new { @class = "form-control form-control-sm" })
+            @Html.ValidationMessageFor(reg => reg.amount)
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3 col-sm-6">
+            @Html.LabelFor(reg => reg.deposite_date, new { @class = "form-check-label label" })
+            @*<input id="datepicker" name="deposite_date" class="form-control form-control-sm" />*@
+            @Html.TextBoxFor(reg => reg.deposite_date, new { @class = "form-control datepicker form-control-sm" })
+            @Html.ValidationMessageFor(reg => reg.deposite_date)
+        </div>
+        <div class="form-group col-md-3 col-sm-6">
+            @Html.LabelFor(reg => reg.FileName, new { @class = "form-check-label label" })
+            <input type="file" name="ImageFile" />
+        </div>
+        <div class="form-group col-md-6 col-sm-6">
+            <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+        </div>
+
+    </div>
+}
+
+@{
+    if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+    }
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Exception))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.Exception ")</script>
+    }
+}
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                uiLibrary: 'bootstrap4', format: 'dd-mmm-yyyy'
+            });
+        });
+
+
+    </script>
+}

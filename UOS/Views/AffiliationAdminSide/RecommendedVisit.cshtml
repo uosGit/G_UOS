@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewBag.Title = "RecommendedVisit";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="form-group" style="width:70%;">
+            <label for="dt_piker" class="align-content-center">Select Date For Visit</label>
+            <input type="date" id="dt_piker" class="form-control" />
+            
+        </div>
+    </div>
+    <div class="col-md-4"></div>
+</div>
+<div class="row table-responsive table-responsive-sm mx-auto">
+    <table id="rcvisit" class="w-100 table table-hover nowrap table-condensed table-sm">
+        <thead class="bg-primary1">
+            <tr class="label text-white" style="height:40px;">
+                <td class="align-middle">Institute Id  </td>
+                <td class="align-middle">Institute Name</td>
+                <td class="align-middle">Principal Name</td>
+                <td class="align-middle">Application Id</td>
+                <td class="align-middle">Year          </td>
+                <td class="align-middle">Govt / Private</td>
+                <td class="align-middle">Phone Number  </td>
+                <td class="align-middle">Postal Address</td>
+                <td class="align-middle">YearID        </td>
+                <td class="align-middle">Check Box     </td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div class="col-md-12">
+        <button id="btn_next" class="btn btn-primary btn-rounded px-3 btn-sm">Next</button>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var ids = {
+                InstituteId: [],
+                YearId:[],
+                ApplicatoinId: [],
+            }
+            //$('#datetimepicker').datetimepicker({
+            //    timepicker:false
+            //});
+            var datatable = $("#rcvisit").DataTable({
+                "proccessing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "../AffiliationAdminSide/RVDataTableViewer",
+                    "type": "POST",
+                    "datatype": "json",
+                    "dataSrc":""
+                },
+                "columnDefs": [
+                    {
+                        "targets":[0,3,8],
+                        "visible": false,
+                        "searchable":false
+                    }
+                ],
+                "columns": [
+                    {
+                        "data": "Institute_ID"
+                    },
+                    {
+                        "data": "Institute_Name"
+                    },
+                    {
+                        "data": "Principal_Name"
+                    },
+                    {
+                        "data": "Application_ID"
+                    },
+                    {
+                        "data": "Year"
+                    },
+                    {
+                        "data": "Nature"
+                    },
+                    {
+                        "data": "phone_No"
+                    },
+                    {
+                        "data": "postal_Address"
+                    },
+                    {
+                        "data": "Year_ID"
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return "<input type='checkbox' id='check' value='' />"  
+                        }
+                    }
+                ]
+            });//datatable ended here
+            $("#btn_next").click(function () {
+                ids.VisitDate = $("#dt_piker").val();
+                $("#rcvisit").find('input[type="checkbox"]:checked').each(function (index, rowId) {
+                    var temp = $(this).parent().parent();
+                    var child = datatable.row(temp).data();
+                    ids.InstituteId.push(child.Institute_ID)
+                    ids.ApplicatoinId.push(child.Application_ID);
+                    ids.YearId.push(child.Year_ID);
+                });
+                    ids = JSON.stringify(ids);
+                    $.ajax({
+                        url: "../AffiliationAdminSide/RVGetSelClgIds",
+                        method: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: ids,
+                        success: function (response) {
+                            if (response.success) {
+                                toastr.success(response.responseText);
+                                $(location).attr('href', response.responseText);
+                            }
+                            else {
+                                //setTimeout(function () {
+                                //    console.log("I m here to wait");
+                                //},10000)
+                                //alert(response.responseText);
+                                toastr.error(response.responseText);
+                                location.reload(true);
+
+                            }
+                        }
+                    });
+            });              
+        });
+
+
+
+
+
+        $('.datepicker').datepicker({
+            uiLibrary: 'bootstrap4'
+        });
+    </script>
+}

@@ -1,0 +1,162 @@
+﻿@model UOS.Models.UserClasses.SportsDetail
+@{
+    ViewBag.Title = "SportsDetail";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sports Form</title>
+
+</head>
+<body class="container-fluid bg-light form-control-sm ">
+   
+        <div class="container bg-white " style="padding:20px;">
+@using (Html.BeginForm("SportsDetail", "UserAccount"))
+{
+            <h6 class="mt-2">PLEASE ENTER SPORTS DETAILS</h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.sports_name, new { @class = "form-check-label label" })
+                    @Html.DropDownListFor(m => m.sports_name, new SelectList(Model.Sports, "Sport_Name", "Sport_Name"), new { @class = "form-control form-control-sm" })
+
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.item_name, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.item_name, new { @class = "form-control  form-control-sm", @required = "true", @placeholder = "bat/baskitball...." })
+                    @Html.ValidationMessageFor(reg => reg.item_name)
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.quantity, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.quantity, new { @class = "form-control  form-control-sm" ,@placeholder = "square feets", @required = "true", @type = "number"})
+                    @Html.ValidationMessageFor(reg => reg.item_name)
+                </div>
+                <div class="form-group col-md-4 col-sm-6">
+                    @Html.LabelFor(reg => reg.remarks, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.remarks, new { @class = "form-control  form-control-sm", @placeholder = "Condition Of Item" })
+                    @Html.ValidationMessageFor(reg => reg.item_name)
+                </div>
+
+
+            </div>
+
+
+            <div class="row">
+                <div class=" col-md-12">
+                    <button class="btn btn-primary btn-rounded mt-2 float-right btn-sm"> Add </button>
+                </div>
+            </div>
+
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="sportstable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <th class="align-middle">Sports Name</th>
+                            <th class="align-middle">Item Name</th>
+                            <th class="align-middle">Items Quantity</th>
+                            <th class="align-middle">Remarks</th>
+                            <th class="align-middle">Update</th>
+                            <th class="align-middle">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr class="my-3" />
+            }
+            <div class="row">
+                <div class="col-md-12">
+@using (Html.BeginForm("DownloadSportDetail", "UserAccount"))
+{
+                    <button class="btn btn-primary btn-rounded  mt-2 float-right btn-sm"> Download Form After Finalizing This Form </button>
+}
+                </div>
+            </div>
+
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/TeachingStaff"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/RoomDetail"> Previous </a>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+
+    @{
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+        if (TempData["Exception"]!= null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+        }
+    }
+
+  
+
+    <script>
+        $(document).ready(function () {
+
+            $("#sportstable").on("click", "#btn_delete", function (e) {
+                e.preventDefault();
+                var id = $(this).attr("data-info-id");
+                $.ajax({
+                    url: "../UserAccount/RemoveSportsDetail?id=" + id,
+                    method: "Get",
+                    success: function (data) {
+                        table.ajax.reload();
+                        toastr.success(data.responseText);
+                    }
+                });
+            });
+
+            var table = $("#sportstable").DataTable({
+                ajax: {
+                    url: "../UserAccount/SDetailDataTableViewer",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+                        data: "Sport_Name"
+                    },
+                    {
+                        data: "Item_Name"
+                    },
+                    {
+                        data: "Item_Quantity"
+                    },
+                    {
+                        data: "Remarks"
+                    },
+                    {
+                        render: function (data, type, row) {
+                            console.log(data);
+                            return '<a class="btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall" href="../UserAccount/SportsDetailUpdate?id=' + row.Sport_Id + '" data-info-id="' + row.Sport_Id + '" id="btn_update">Update</a>'
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return '<button class="btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall" data-info-id="' + row.Sport_Id + '" id="btn_delete">Remove</button>'
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+
+

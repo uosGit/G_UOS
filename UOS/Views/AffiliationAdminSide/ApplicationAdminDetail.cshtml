@@ -1,0 +1,577 @@
+﻿@model UOS.Models.PrevisitProcess
+@{
+    ViewBag.Title = "ApplicationAdminDetail";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+
+@*<link href="~/Content/toastr.css" rel="stylesheet" />*@
+<div class="container">
+    @*Main Heading In the Page*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h3 style="text-align:center;">APPLICATION FOR GRANT OF AFFILIATION WITH </h3>
+                <hr />
+                <h3 style="text-align:center;">UNIVERSITY OF SARGODHA</h3>
+            </div>
+        </div>
+    </div> 
+    @*   Details Of The Organization having the pending App*@
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-11" style="border:1px solid black;">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="text-dark font-weight-normal ml-3 ">Name Of the Institution:</label><label class="font-weight-bold ml-2"> @UOS.Models.AffiliationAdminDetail.InstituteName</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark font-weight-normal ml-3 ">Name Of the Principal: </label> <label class="font-weight-bold ml-2">@UOS.Models.AffiliationAdminDetail.PrincipalName</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="text-dark font-weight-normal">Postal Address: </label> <label class="font-weight-bold ml-2">@UOS.Models.AffiliationAdminDetail.PostelAddress</label>
+                </div>
+                <div class="col-md-4">
+                    <label class="text-dark font-weight-normal ml-4 pl-3">Phone No (Off):</label> <label class="font-weight-bold ml-2">@UOS.Models.AffiliationAdminDetail.Phonenumber</label>
+                </div>
+                <div class="col-md-4">
+                    <label class="text-dark font-weight-normal ml-3 ">Fax No:</label> <label class="font-weight-bold ml-2">@UOS.Models.AffiliationAdminDetail.faxNumber</label>
+                </div>
+            </div>
+        </div>
+    </div>
+@using (Html.BeginForm("ChecklistCalculation", "AffiliationAdminSide"))
+{
+    <table class="table table-bordered table-hover table-condensed">
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>1.</td>
+            <td>Program / Subject Applied For affiliation</td>
+            <td>Incase of Degree Classes attach list of Elective and optional Subjects at <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "A" }) ">Ann-A</a></td>
+            @*<td>Incase of Degree Classes attach list of Elective and optional Subjects at <a href="javascript:functioabc()" >Ann-A</a></td>*@
+            <td>@Html.RadioButtonFor(prevp => prevp.SubjectApplied, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.SubjectApplied, false, new { @class = "form-check",@checked="checked" })</td>
+        </tr>
+        <tr>
+            <td>2.</td>
+            <td>Subject already Affiliated ( if any ) Reference No.</td>
+            <td>Attach list at  <button id="Click_Ann-B" class="btn btn-link" type="button">Ann-B.</button>along with university of sargodha letter.Please provide the<button id="Click_Certificate" class="btn btn-link" type="button">Certificate.</button>  the no course / discipline is being run in collaboration with any other university other then university of sargodha . In the otherwise case attach the list of Subject / disciplines along with the letter of the university. <button id="Click_ann_b_i" class="btn btn-link" type="button">Ann-B(i).</button></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.SubjectAlreadyAffiliated, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.SubjectAlreadyAffiliated, false, new { @class = "form-check", @checked = "checked" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.SubjectAlreadyAffiliated, true, new { @class = "form-check" })</td>
+        </tr>
+        <tr>
+            <td>3.</td>
+            <td>Pending for table row</td>
+            <td>@*Attach list at  <a href="#">Ann-B.</a>  along with university of sargodha letter.Please provide the <a href="#">certificate</a> the no course / discipline is being run in collaboration with any other university other then university of sargodha . In the otherwise case attach the list of Subject / disciplines along with the letter of the university. <a>Ann-B(i).</a>*@</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.AffiliationWithBISE, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.AffiliationWithBISE, false, new { @class = "form-check", @checked = "checked" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.AffiliationWithBISE, true, new { @class = "form-check" })</td>
+        </tr>
+        <tr>
+            <td>4.</td>
+            <td>NOC From The Govt. concerned (Eaducation Department)</td>
+            <td>Attach  <<button id="Click_Ann-C" class="btn btn-link" type="button">Ann-C.</button></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.NOCFromGovt, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.NOCFromGovt, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>5.</td>
+            <td>Prospectus / brochure</td>
+            <td>Attach  <button id="Click_Ann-D" class="btn btn-link"  type="button" >Ann-D.</button></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Prospectus, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Prospectus, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>6.</td>
+            <td>Building</td>
+            @*<td>Attach detail on  <a href="#">Form No. 1</a></td>*@
+            <td>Attach detail on <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F1" }) ">Form No. 1</a></td>
+
+            <td>@Html.RadioButtonFor(prevp => prevp.Building, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Building, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>7.</td>
+            <td>Students Hostel ( If any )</td>
+            <td>Attach the detail of Hostel facilities along with detail of resident students / staff  <button id="Click_Ann-E" class="btn btn-link" type="button">Ann-E.</button></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.StudentsHostel, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.StudentsHostel, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>8.</td>
+            <td>Staff Residences</td>
+            <td>Attach the detail of Staff Residences  <button id="Click_Ann-E" class="btn btn-link" type="button">Ann-F.</button></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.StaffResidence, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.StaffResidence, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>9.</td>
+            <td>Finances:
+                <ul>
+                    <li>Development Funds</li><li>Recurring Funds</li><li>Reserve Funds</li>
+                </ul>
+            </td>
+            @*<td>Attach the detail on  <a href="#">Form No. 2 </a> and <a href="#">Form No. 3</a></td>*@
+            <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F2" }) ">Form No. 2</a> and <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F3" }) ">Form No. 3</a></td>
+
+            <td>@Html.RadioButtonFor(prevp => prevp.Finance, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Finance, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>10.</td>
+            <td>Sports Facilities / Ground Equipment</td>
+            <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F4" }) ">Form No. 4</a></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.SportFacility, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.SportFacility, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>11.</td>
+            <td>Teaching Staff</td>
+            <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F5" }) ">Form No. 5</a></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.TeachingStaff, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.TeachingStaff, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>12.</td>
+            <td>Non-Teaching Staff</td>
+            <td>Attach the detail on <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F6" }) ">Form No. 6</a></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.NonTeaching, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.NonTeaching, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>13.</td>
+            <td>Library</td>
+            <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F7" }) ">Form No. 7</a></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Library, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Library, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>14.</td>
+            <td>Laboratories and Equipment</td>
+            <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F8" }) ">>Form No. 8</a></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Labortary, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.Labortary, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>15.</td>
+            <td>Others Detail</td>
+            <td><a href="#">View</a></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.OtherDetail, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.OtherDetail, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td>16.</td>
+            <td>Demand Draft</td>
+            <td><button id="Click_view_Draft" class="btn btn-link" type="button">View Draft.</button></td>
+            <td>@Html.RadioButtonFor(prevp => prevp.DemandDraft, true, new { @class = "form-check" })</td>
+            <td>@Html.RadioButtonFor(prevp => prevp.DemandDraft, false, new { @class = "form-check", @checked = "checked" })</td>
+        </tr>
+    </table>
+    @Html.TextBoxFor(prevp => prevp.remarksApp, new { @class = "form-control"})
+    @Html.CheckBoxFor(prevp => prevp.isAcceptedApp, new { @class="form-control"})
+     
+    <button>Submit</button>
+}
+
+    
+
+    </div>
+    
+
+        @section scripts{
+
+
+            <script>
+                function functioabc() {
+                    $.ajax({
+                        url: "../AffiliationAdminSide/AffRptViewer?a=" + 1
+                    });
+                }
+            </script>
+
+
+            <script>
+                $(document).ready(function () {
+                    var arr = [];
+                    let imagecounter = 0; 
+
+                    // click on ann-d
+                    $('#Click_Ann-D').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left"); 
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_D",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1)
+                                    {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1)
+                                    {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on ann-D
+
+
+
+                    // click on ann-b
+                    $('#Click_Ann-B').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_B?catogery=6",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on ann-b
+
+
+
+
+                    // click on Certificate
+                    $('#Click_Certificate').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_B?catogery=7",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if(arr.length > 0)
+                                    {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else
+                                    {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on Certificate
+
+                    // click on ann_b_i
+                    $('#Click_ann_b_i').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_B?catogery=8",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on ann_b_i
+
+                    // click on ann_c
+                    $('#Click_Ann-C').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_B?catogery=9",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on ann_c
+
+                    // click on ann_E
+                    $('#Click_Ann-E').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_B?catogery=11",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on ann_E
+
+
+                    // click on ann_F
+                    $('#Click_Ann-F').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForAnn_B?catogery=12",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on ann_F
+
+
+
+                    // click on View Draft
+                    $('#Click_view_Draft').on({
+                        'click': function () {
+                            $("#overlayNew").attr("style", "display:block");
+                            $("#button-addon2").attr("style", "z-index: 1;");
+                            $("#leftmenubar").removeClass("left");
+                            $("#maincontainer").attr("style", "position:fixed;");
+                            $("#my_image_viwer").attr('src', "../Images/Loading.gif");
+                            $.ajax({
+                                url: "../AffiliationAdminSide/GetImagesForViewDraft",
+                                type: "GET",
+                                success: function (data) {
+                                    $.each(data, function (i, obj) {
+                                        arr.push(obj.ImaeName.toString());
+                                    })
+                                    if (arr.length == 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                    else if (arr.length > 1) {
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", false);
+                                    }
+                                    if (arr.length > 0) {
+                                        $('#my_image_viwer').attr('src', arr[imagecounter]);
+                                    }
+                                    else {
+                                        $('#my_image_viwer').attr('src', 'notfuonfimage.png');
+                                        $('#previousbtnimageoverlay').attr("disabled", true);
+                                        $('#Nextbtnimageoverlay').attr("disabled", true);
+                                    }
+                                }
+                            });
+
+                        }
+                    });
+                    // end click on view daraft
+
+
+                    ///// btn close image overlay
+                    $('#closebtnimageoverlay').on({
+                        'click': function () {
+
+                            $("#overlayNew").attr("style", "display:none");
+                            $("#button-addon2").attr("style", "z-index: 2;");
+                            $("#leftmenubar").addClass("left");
+                            $("#maincontainer").removeAttr("style");
+                            while (arr.length > 0) {
+                                arr.pop();
+                            }
+                        }
+                    });
+
+                    ///// btn Previous image overlay
+                    $('#previousbtnimageoverlay').on({
+                        'click': function () {
+                            --imagecounter;
+                            if(imagecounter == 0) {
+                                $('#previousbtnimageoverlay').attr("disabled", true);
+                            }
+                            $('#Nextbtnimageoverlay').attr("disabled", false);
+                            $('#my_image_viwer').attr('src', arr[imagecounter]);
+                        }
+                    });
+
+                    ///// btn Previous image overlay
+                    $('#Nextbtnimageoverlay').on({
+                        'click': function () {
+                            ++imagecounter;
+                            ++imagecounter;
+                            if (arr.length == imagecounter)
+                            {
+                                $('#Nextbtnimageoverlay').attr("disabled", true);
+                            }
+                            $('#previousbtnimageoverlay').attr("disabled", false);
+                            $('#my_image_viwer').attr('src', arr[--imagecounter]);
+                        }
+                    });
+
+
+
+                });
+            </script>
+
+
+        }
+
+  
+
+
+
+
+

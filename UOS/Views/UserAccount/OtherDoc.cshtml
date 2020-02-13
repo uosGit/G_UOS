@@ -1,0 +1,79 @@
+﻿@model UOS.Models.UserClasses.OtherDoc
+@{
+    ViewBag.Title = "OtherDoc";
+}
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Other Doc Form</title>
+</head>
+<body class="container-fluid bg-light form-control-sm ">
+    @using (Html.BeginForm("OtherDoc", "UserAccount", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container bg-white " style="padding:20px;">
+            <h6 class="mt-2">ATTACH OTHER DOCUMENTS</h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-6 col-sm-6">
+                    @Html.LabelFor(reg => reg.doc_cat_Id, new { @class = "form-check-label label" })
+                    @Html.DropDownListFor(m => m.doc_cat_Id, new SelectList(Model.DocumentDD, "ID", "Cat_Desc"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.pg_no, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.pg_no, new { @class = "form-control form-control-sm" })
+                    @Html.ValidationMessageFor(reg => reg.pg_no)
+                </div>
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.attach, new { @class = "form-check-label label" })
+                    <input type="file" name="ImageFile" />
+                </div>
+                <div class="form-group col-md-1 col-sm-6">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                </div>
+
+            </div>
+
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/Affiliation"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/Recurring"> Previous </a>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+    }
+
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+        {
+            <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+        }
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+        if (TempData["Exception"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString()")</script>
+        }
+    }
+</body>
+
+</html>
+
+
+
+
+

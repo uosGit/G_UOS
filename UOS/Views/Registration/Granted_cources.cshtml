@@ -1,0 +1,212 @@
+﻿@model UOS.Models.UserClassesReg.Granted_courses_cls
+@{
+    ViewBag.Title = "Granted_cources";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+
+    <div class="container bg-white " style="padding:20px;">
+        <h6 class="mt-2">SELECT THE DISCIPLINE FOR ADD STUDENT </h6>
+        <hr class="my-3" />
+        @using (Html.BeginForm("Granted_cources", "Registration", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmStuAdminDetail" }))
+        //@using (Html.BeginForm("Granted_cources", "Registration"))
+        {
+        <div class="row">
+            @Html.HiddenFor(reg => reg.AppId)
+            <div class="form-group col-md-3 col-sm-3 ">
+                @Html.LabelFor(m => m.category, new { @class = "form-check-label label" })
+                @Html.DropDownListFor(m => m.category, new SelectList(Model.objCat, "ID", "App_Program_Catg"), new { @class = "form-control form-control-sm", @id = "ddlcat" })
+            </div>
+            <div class="form-group col-md-8 col-sm-6">
+                @Html.LabelFor(m => m.discipline, new { @class = "form-check-label label" })
+                @Html.DropDownListFor(m => m.discipline, new SelectList(Model.objprogram, "program_id", "program_Desc"), "---Select Program---", new { @class = "form-control form-control-sm", @id = "ddlProgram" })
+            </div>
+            <div class="form-group col-md-8 col-sm-6">
+                @*@Html.LabelFor(m => m.GrantedSeats, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.GrantedSeats, new { @id = "grantedseats", @class = "form-control form-control-sm", @readonly = "readonly" })*@
+            </div>
+            <div class="form-group col-md-1 col-sm-3">
+                <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm" id="BtnNext" > Next </button>
+            </div>
+           
+        </div>
+       }
+    </div>
+
+    
+    <div class="modal fade" id="AlertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Admission Eligibility</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group col-md-12 col-sm-6">
+                    <label class="form-check-label label1 ">Required Degree</label>
+                    <label class="small" id="Required_Degree"></label>
+                </div>
+                <div class="form-group col-md-12 col-sm-6">
+                    <label class="form-check-label label1  ">Required Percentage</label>
+                    <label class="small" id="Required_Marks"></label>
+                </div>
+                <div class="form-group col-md-12 col-sm-6">
+                    <label class="form-check-label label1 " id="Required_Other">Other</label>
+                    <label class="small"></label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary btn-sm">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+
+
+
+@{
+    if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+    }
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+    if (TempData["Exception"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+    }
+}
+
+<script src="~/Scripts/toastr.min.js"></script>
+
+
+@section scripts{
+    <script>
+        $('#ddlcat').change(function () {
+            $("#grantedseats").val(0);
+            getcourse();
+        });
+        
+        $("#ddlProgram").change(function () {
+            if ($("#ddlProgram option:selected").text() === '---Select Program---')
+            {
+                $("#grantedseats").val(0);
+            }
+            else {
+                var cat = $("#ddlcat").val();
+                var programid = $(this).val();
+                var val = false;
+                var cat = $("#ddlcat").val();
+                if (cat === 'Anual') {
+                    val = true;
+                }
+                var data = cat + "," + programid;
+                $.ajax({
+                    url: "../Registration/pop_seats_wrt_program?data=" + data,
+                    type: 'GET',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        $.each(result, function (i, obj) {
+                            $("#grantedseats").val(obj.Granted_Seats);
+                        });
+                    }
+                });
+            }
+        });
+        function getcourse() {
+            var val;
+            var cat = $("#ddlcat").val();
+            if (cat === 'Anual' ) {
+                val = 1;
+            }
+            else {
+                val = 3;
+            }
+            $.ajax
+            ({
+                url: '../Registration/Pop_program',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    val: +cat
+                }),
+                success: function (result) {
+                    $("#ddlProgram").html("");
+                    $("#ddlProgram").append($('<option ></option>').html("---Select Program---"))
+                    $.each($.parseJSON(result), function (i, obj) {
+                        $("#ddlProgram").append($('<option></option>').val(obj.Program_ID).html(obj.Program_Desc))
+                    })
+                },
+                error: function () {
+                    toastr.error("Something went wrong..");
+                },
+            });
+        }
+
+
+        $(function () {
+            $('#BtnNext').click(function (e) {
+                e.preventDefault();
+                var DlCatogery = $('#ddlcat').val();
+
+                $.ajax
+           ({
+               url: '../Registration/GetAdmissionDates?DlCatogery='+DlCatogery,
+               type: 'GET',
+               datatype: 'application/json',
+               contentType: 'application/json',
+               //data: JSON.stringify({
+               //    DlCatogery: +DlCatogery
+               //}),
+               success: function (result) {
+                   debugger;
+                   if (result === "0") {
+                       toastr.error("Admission Is Closed");
+                       return false;
+                   }
+                   else if(result === "1")
+                   {
+                       $("form#frmStuAdminDetail")[0].submit();
+                       return true;
+                   }
+                   else {
+                       toastr.error("Error In Fatching data from Server");
+                       return false;
+                   }
+               },
+               error: function () {
+                   toastr.error("Something went wrong.....");
+               },
+                 });
+            });
+        });
+
+
+
+
+
+
+    </script>
+
+    }
+
+
+
+
+
+
+
+
+
+
+

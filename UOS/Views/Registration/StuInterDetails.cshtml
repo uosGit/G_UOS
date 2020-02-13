@@ -1,0 +1,686 @@
+﻿@model UOS.Models.Registration.IntermediateDetails
+@{
+    ViewBag.Title = "_Stu_Inter_info";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+@*<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>*@
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+
+<div class="container bg-white " style="padding:20px;">
+    <div class="row">
+
+        <div class="col-lg-3 col-md-4 col-sm-12 col-12">
+            <!-- Nav tabs -->
+            <nav class="nav  flex-column text-center">
+                <a class="nav-item nav-link  py-4 formdata">
+                    <i class="fa fa-child fa-lg mr-2"></i> Personal Details
+                </a>
+                <a class="nav-item nav-link py-4 formdata">
+                    <i class="fa fa-line-chart fa-lg mr-2"></i> Guardian Details
+                </a>
+                <a class="nav-item nav-link  py-4 formdata active">
+                    <i class="fa fa-user fa-lg mr-2"></i>  Matric/O-Level
+                </a>
+                <a href="/Registration/StuInterDetails" class="nav-item nav-link py-4 formdata">
+                    <i class="fa fa-id-card fa-lg mr-2"></i> Inter/A-level
+                </a>
+                <a href="/Registration/StuBachelorsDetails" class="nav-item nav-link py-4 formdata">
+                    <i class="fa fa-id-card fa-lg mr-2"></i> Bachelors Details
+                </a>
+                <a href="/Registration/StuAttachDocument" class="nav-item nav-link py-4 formdata">
+                    <i class="fa fa-id-card fa-lg mr-2"></i> Attach Documents
+                </a>
+                <a href="/Registration/StuAffiliatedClg" class="nav-item nav-link py-4 formdata">
+                    <i class="fa fa-paperclip fa-lg mr-2 "></i> For Affiliated Colleges
+                </a>
+
+            </nav>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12 col-12">
+            <div class="tab-pane" id="p6">
+                @Html.ValidationSummary("", new { @style = "color:red;" })
+                <div class="col-md-12">
+                    @using (Html.BeginForm("StuInterDetails", "Registration", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmStuInterDetail" }))
+                    {
+                        <div class="form-group row align">
+                            @Html.LabelFor(reg => reg.i_degree, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-graduation-cap"></i></span>
+                                    </div>
+                                    @*@Html.TextBoxFor(reg => reg.i_degree, new { @class = "form-control form-control-sm", @placeholder = "FSC Pre-Engg" })*@
+                                    @*@Html.DropDownListFor(reg => reg.i_degree, new SelectList(Model.Inter_DD, "ID", "Inter_Program"), new { @class = "form-control form-control-sm", @id = "cmbInter" })*@
+
+                                    @Html.DropDownListFor(reg => reg.i_degree, new SelectList(Model.Inter_DD, "ID", "Inter_Program"), new { @class = "form-control form-control-sm", @required = "true", @id = "cmbInter" })
+                                    @Html.ValidationMessageFor(reg => reg.i_degree)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row align">
+                            @Html.LabelFor(reg => reg.i_board, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-registered"></i></span>
+                                    </div>
+                                    @*@Html.TextBoxFor(reg => reg.i_board, new { @class = "form-control form-control-sm", @placeholder = "BISE Sargodha" })*@
+                                    @Html.DropDownListFor(m => m.i_board, new SelectList(Model.ddl_obj_intr_boad, "B_ID", "Board_Name"), new { @class = "form-control form-control-sm", @id = "ddlboards" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" row align">
+                            @Html.LabelFor(reg => reg.i_subjects1, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <!--1st subject-->
+                                <div class="row">
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-book"></i></span>
+                                            </div>
+                                            @*@Html.TextBoxFor(reg => reg.i_subjects1, new { @class = "form-control form-control-sm", @placeholder = "1st Subject" })*@
+                                            @Html.DropDownListFor(m => m.i_subjects1, new SelectList(Model.i_subjects1_DD, "Id", "Lab_Desc"), new { @class = "form-control form-control-sm", @id = "i_subjects1_DD" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group ">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil-square-o"></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_1st_o_marks, new { @class = "form-control form-control-sm", @placeholder = "1st Subject Obtained Marks", @Id = "i_1st_o_marks" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil "></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_1st_t_marks, new { @class = "form-control form-control-sm", @placeholder = "1st Subject Total Marks", @ID = "i_1st_t_marks" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" row align">
+                            @Html.LabelFor(reg => reg.i_subjects2, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <!--2nd subject-->
+                                <div class="row">
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class=" fa fa-book "></i></span>
+                                            </div>
+                                            @*@Html.TextBoxFor(reg => reg.i_subjects2, new { @class = "form-control form-control-sm", @placeholder = "2nd Subject" })*@
+                                            @Html.DropDownListFor(m => m.i_subjects2, new SelectList(Model.i_subjects2_DD, "Id", "Lab_Desc"), new { @class = "form-control form-control-sm", @placeholder = "2nd Subject", @id = "i_subjects2_DD" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group ">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil-square-o"></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_2nd_o_marks, new { @class = "form-control form-control-sm", @placeholder = "2nd Subject Obtained Marks", @ID = "i_2nd_o_marks" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil "></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_2nd_t_marks, new { @class = "form-control form-control-sm", @placeholder = "2nd Subject Total Marks", @ID = "i_2nd_t_marks" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" row align">
+                            @Html.LabelFor(reg => reg.i_subjects3, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <!--3rd subject-->
+                                <div class="row">
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-book"></i></span>
+                                            </div>
+                                            @*@Html.TextBoxFor(reg => reg.i_subjects3, new { @class = "form-control form-control-sm", @placeholder = "3rd Subject" })*@
+                                            @Html.DropDownListFor(m => m.i_subjects3, new SelectList(Model.i_subjects3_DD, "Id", "Lab_Desc"), new { @class = "form-control form-control-sm", @id = "i_subjects3_DD" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group ">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil-square-o"></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_3rd_o_marks, new { @class = "form-control form-control-sm", @placeholder = "3rd Subject Obtained Marks", @id = "i_3rd_o_marks" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-12 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil "></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_3rd_t_marks, new { @class = "form-control form-control-sm", @placeholder = "3rd Subject Total Marks", @id = "i_3rd_t_marks" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row align">
+                            @Html.LabelFor(reg => reg.i_p_year, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-calendar-check-o"></i></span>
+                                    </div>
+                                    @*@Html.TextBoxFor(reg => reg.i_p_year, new { @class = "form-control form-control-sm", @placeholder = "Year of Passing" })*@
+                                    @Html.DropDownListFor(m => m.i_p_year, new SelectList(Model.ddl_obj_years, "ID", "Year"), new { @class = "form-control form-control-sm", @id = "ddlyear" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row align">
+                            @Html.LabelFor(reg => reg.i_exam_type, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8 text-left ">
+                                <div class="custom-control custom-radio small custom-control-inline">
+                                    @Html.RadioButtonFor(reg => reg.i_exam_type, "Annual", new { @class = "custom-control-input p1", @id = "custm" })
+                                    <label class="custom-control-label p-1" for="custm">Annual</label>
+                                </div>
+                                <div class="custom-control custom-radio small custom-control-inline">
+                                    @Html.RadioButtonFor(reg => reg.i_exam_type, "Supplementary", new { @class = "custom-control-input p1", @id = "custm1" })
+                                    <label class="custom-control-label p-1" for="custm1">Supplementary</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row align">
+                            @Html.LabelFor(reg => reg.i_roll_no, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-file-text-o"></i></span>
+                                    </div>
+                                    @Html.TextBoxFor(reg => reg.i_roll_no, new { @class = "form-control form-control-sm", @placeholder = "Board Roll No" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class=" row align">
+                            @Html.LabelFor(reg => reg.i_t_marks, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <div class="row">
+                                    <div class=" col-md-6 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil-square-o "></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_o_marks, new { @class = "form-control form-control-sm", @placeholder = "Obtained Marks", @ID = "i_o_marks" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-6 form-group">
+                                        <div class="input-group ">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-pencil"></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_t_marks, new { @class = "form-control form-control-sm", @placeholder = "Total Marks", @ID = "i_t_marks" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-6 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-percent "></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.Perstage, new { @class = "form-control form-control-sm", @readonly = "readonly", @placeholder = "percentage", @id = "txtperstage" })
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-6 form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fa fa-percent "></i></span>
+                                            </div>
+                                            @Html.TextBoxFor(reg => reg.i_division, new { @class = "form-control form-control-sm", @placeholder = "Division" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row align">
+                            @Html.LabelFor(reg => reg.i_inter_scan, new { @class = "col-form-label label col-lg-3 col-md-4" })
+                            <div class=" col-lg-6  col-md-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-paperclip"></i></span>
+                                    </div>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input  " id=" customfile" name="ImageFile">
+                                        <label class="custom-file-label text-left form-control-sm" for="customFile">Inter Degree</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="form-group row align">
+                        <div class=" col-lg-3 col-md-4"></div>
+                        <div class=" form-group col-lg-6  col-md-8 ">
+                            <button class="btn btn-success btn-rounded  mt-2 px-3  float-left btn-sm" id="button-id"> Submit </button>
+                            @Html.HiddenFor(reg => reg.requeredDegEduction, new { @id = "Validat_Id" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="AlertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Admission Eligibility</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group col-md-12 col-sm-6">
+                    <label class="form-check-label label1 ">Required Degree</label>
+                    <label class="small" id="Required_Degree"></label>
+                </div>
+                <div class="form-group col-md-12 col-sm-6">
+                    <label class="form-check-label label1  ">Required Percentage</label>
+                    <label class="small" id="Required_Marks"></label>
+                </div>
+                <div class="form-group col-md-12 col-sm-6">
+                    <label class="form-check-label label1 " id="Required_Other">Other</label>
+                    <label class="small"></label>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{
+    if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+    }
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+    if (TempData["Exception"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+    }
+}
+
+<script src="~/Scripts/toastr.min.js"></script>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#button-id").click(function () {
+                //   $('#frmStuInterDetail').submit();
+                //  $('#frmStuInterDetail').submit(function (e) {
+                var result = "0";
+
+                //  $("#Validat_Id").val(false);
+
+                var Vaild_Degree = false;
+                var Vaild_Degree_Marks = false;
+                var Vaild_Subject_1 = false;
+                var Vaild_Subject_1_T_Marks = false;
+                var Vaild_Subject_1_P_Marks = false;
+                var Vaild_Subject_2 = false;
+                var Vaild_Subject_2_T_Marks = false;
+                var Vaild_Subject_2_P_Marks = false;
+                var Vaild_Subject_3 = false;
+                var Vaild_Subject_3_T_Marks = false;
+                var Vaild_Subject_3_P_Marks = false;
+
+                $.ajax({
+                    type: "Get",
+                    dataType: "json",
+                    url: "../Registration/GetProgElegCatera",
+                    // data: { dept: depat, Prog_ct: Prog_cat, Prog_Typ: Prog_Type },
+                    success: function (data) {
+                        console.log(data);
+
+
+                        // jQuery.each(data, function(index, obj) {
+                        $(data).each(function (index, obj) {
+
+                            // debugger;
+                            result = obj.ID;
+                            if (obj.Program_Type > 1)
+                            {
+                                $("#Validat_Id").val(true);
+                                $("#AlertModal").hide();
+                                $("form#frmStuInterDetail")[0].submit();
+                            }
+                            else if (obj.Program_Type == 1)
+                            {
+                                // Degree Chak
+
+                                //   alert(Vaild_Degree);
+                                var Int_degree = parseInt($("#cmbInter option:selected").val());
+                                var ReqDEgreeArray = obj.Req_program_string.split(',');
+                                var EqualEdu = obj.EqualEdu;
+                                if (obj.Req_subject1_ID == null) {
+                                    Vaild_Subject_1 = true;
+                                    Vaild_Subject_1_T_Marks = true;
+                                    Vaild_Subject_1_P_Marks = true;
+                                }
+                                else {
+                                    var ReqSubject_1_Array = obj.Req_subject1_ID.split(',');
+                                }
+
+                                if (obj.Req_subject2_ID == null) {
+                                    Vaild_Subject_2 = true;
+                                    Vaild_Subject_2_T_Marks = true;
+                                    Vaild_Subject_2_P_Marks = true;
+                                }
+                                else {
+                                    var ReqSubject_2_Array = obj.Req_subject2_ID.split(',');
+                                }
+
+                                if (obj.Req_subject3_ID == null) {
+                                    Vaild_Subject_3 = true;
+                                    Vaild_Subject_3_T_Marks = true;
+                                    Vaild_Subject_3_P_Marks = true;
+                                }
+                                else {
+                                    var ReqSubject_3_Array = obj.Req_subject3_ID.split(',');
+                                }
+                                //  debugger;
+                                if (EqualEdu && Int_degree > 0) {
+                                    Vaild_Degree = true;
+                                }
+                                else {
+                                    for (var i = 0; i < ReqDEgreeArray.length; i++) {
+                                        if (parseInt(ReqDEgreeArray[i]) == Int_degree) {
+                                            Vaild_Degree = true;
+                                            break;
+                                        }
+                                        else {
+                                            Vaild_Degree = false;
+                                        }
+                                    }
+                                }
+                                if (Vaild_Degree && obj.Req_marks > 0)
+                                {
+                                    var I_T_Marks = $('#i_t_marks').val();
+                                    var I_O_Marks = $('#i_o_marks').val();
+                                    var PErs_Marks = (I_O_Marks * 100) / I_T_Marks;
+
+                                    if (PErs_Marks >= obj.Req_marks && I_T_Marks > 0 && I_O_Marks>0) {
+                                        Vaild_Degree_Marks = true;
+                                        //  alert(Vaild_Degree + 'Deg-' + Vaild_Degree_Marks + 'Marks-');
+                                    }
+                                    else {
+                                        Vaild_Degree_Marks = false;
+                                    }
+
+                                    //Subject 1 Validation
+                                    if (Vaild_Subject_1 == false)
+                                    {
+                                        var Int_Subject_1 = parseInt($("#i_subjects1_DD option:selected").val());
+
+                                        Vaild_Subject_1 = MyValidSubject(ReqSubject_1_Array, Int_Subject_1);
+                                        if (Vaild_Subject_1)
+                                        {
+                                            // Total MArks
+                                            if (obj.Req_subject1_Tmarks == NaN || obj.Req_subject1_Tmarks == 0) {
+                                                Vaild_Subject_1_T_Marks = true;
+                                                // Vaild_Subject_1_P_Marks = true;
+                                            }
+                                            else
+                                            {
+                                                if ($('#i_1st_t_marks').val() >= Req_subject1_Tmarks) {
+                                                    Vaild_Subject_1_T_Marks = true;
+                                                }
+                                                else
+                                                {
+                                                    Vaild_Subject_1_T_Marks = false;
+                                                }
+                                            }
+
+                                            // Obtain Marks
+                                            if (obj.Req_subject1_Omarks == NaN || obj.Req_subject1_Omarks == 0) {
+
+                                                Vaild_Subject_1_P_Marks = true;
+
+                                            }
+                                            else
+                                            {
+                                                Vaild_Subject_1_P_Marks = SubjectMarks(obj.Req_subject1_Omarks, $('#i_1st_t_marks').val(), $('#i_1st_o_marks').val())
+
+                                            }
+
+                                        }
+                                    }
+                                    //
+
+                                    //Subject 2 Validation
+                                    if (Vaild_Subject_2 == false)
+                                    {
+                                        var Int_Subject_2 = parseInt($("#i_subjects2_DD option:selected").val());
+                                        Vaild_Subject_2 = MyValidSubject(ReqSubject_2_Array, Int_Subject_2);
+                                        if (Vaild_Subject_2) {
+                                            // Total MArks
+                                            if (obj.Req_subject2_Tmarks == NaN || obj.Req_subject2_Tmarks == 0) {
+                                                Vaild_Subject_2_T_Marks = true;
+                                            }
+                                            else {
+                                                if ($('#i_2nd_t_marks').val() >= Req_subject2_Tmarks) {
+                                                    Vaild_Subject_2_T_Marks = true;
+                                                }
+                                                else {
+                                                    Vaild_Subject_2_T_Marks = false;
+                                                }
+                                            }
+                                            // Obtain Marks
+
+                                            if (obj.Req_subject2_Omarks == NaN || obj.Req_subject2_Omarks == 0) {
+
+                                                Vaild_Subject_2_P_Marks = true;
+                                            }
+                                            else {
+                                                Vaild_Subject_2_P_Marks = SubjectMarks(Req_subject2_Omarks, $('#i_2nd_t_marks').val(), $('#i_2nd_o_marks').val())
+
+                                            }
+                                        }
+                                    }
+
+                                    //Subject 3 Validation
+                                    if (Vaild_Subject_3==false)
+                                    {
+                                        var Int_Subject_3 = parseInt($("#i_subjects3_DD option:selected").val());
+                                        Vaild_Subject_3 = MyValidSubject(ReqSubject_3_Array, Int_Subject_3);
+                                        if (Vaild_Subject_3) {
+                                            // Total MArks
+                                            if (obj.Req_subject3_Tmarks == NaN || obj.Req_subject3_Tmarks == 0) {
+                                                Vaild_Subject_3_T_Marks = true;
+                                            }
+                                            else {
+                                                if ($('#i_3rd_t_marks').val() >= Req_subject3_Tmarks) {
+                                                    Vaild_Subject_3_T_Marks = true;
+                                                }
+                                                else {
+                                                    Vaild_Subject_3_T_Marks = false;
+                                                }
+                                            }
+                                            // Obtain Marks
+
+                                            if (obj.Req_subject3_Omarks == NaN || obj.Req_subject3_Omarks == 0) {
+
+                                                Vaild_Subject_3_P_Marks = true;
+                                            }
+                                            else {
+                                                Vaild_Subject_3_P_Marks = SubjectMarks(Req_subject3_Omarks, $('#i_3rd_t_marks').val(), $('#i_3rd_o_marks').val())
+
+                                            }
+                                        }
+                                    }
+
+
+                                }
+                                //    alert(Vaild_Degree + '-' + Vaild_Degree_Marks + '-' + Vaild_Subject_1 + '-' + Vaild_Subject_1_T_Marks + '-' + Vaild_Subject_1_P_Marks + '-' + Vaild_Subject_2 + '-' + Vaild_Subject_2_T_Marks + '-' + Vaild_Subject_2_P_Marks + '-' + Vaild_Subject_3 + '-' + Vaild_Subject_3_T_Marks + '-' + Vaild_Subject_3_P_Marks);
+
+                                if (Vaild_Degree && Vaild_Degree_Marks && Vaild_Subject_1 && Vaild_Subject_1_T_Marks && Vaild_Subject_1_P_Marks && Vaild_Subject_2 && Vaild_Subject_2_T_Marks && Vaild_Subject_2_P_Marks && Vaild_Subject_3 && Vaild_Subject_3_T_Marks && Vaild_Subject_3_P_Marks)
+                                {
+                                    console.log("Sesscus");
+                                    $("form#frmStuInterDetail")[0].submit();  //$('#frmStuInterDetail')
+                                    //  alert("1");
+
+                                }
+                                else
+                                {
+
+                                    //   alert("2");
+                                    $('#frmStuInterDetail').submit(function (e) {
+                                        e.preventDefault(); console.log(this)
+                                    });
+                                    GetModelData(result);
+                                    $("#AlertModal").modal('show');
+                                }
+                            }
+
+                        });
+
+                        // }
+                    }
+                });
+            });
+
+            function MyValidSubject(Array, subjID) {
+                var vluRet = false;
+                for (var i = 0; i < Array.length; i++) {
+                    if (parseInt(Array[i]) == subjID) {
+                        vluRet = true;
+                        break;
+                    }
+                    else {
+                        vluRet = false;
+                    }
+                }
+
+                return vluRet;
+            }
+
+            function GetModelData(id) {
+
+                $.ajax({
+                    type: "Get",
+                    dataType: "json",
+                    url: "../Registration/GetProgElegModelData?id=" + id,
+
+                    success: function (data) {
+                        //    console.log(data);
+
+                        $(data).each(function (index, obj) {
+                            if (obj.EqualEdu) {
+                                $("#Required_Degree").text(obj.Programs + ' Or Equivalent Eualification');
+                            }
+                            else {
+                                $("#Required_Degree").text(obj.Programs);
+                            }
+                            $("#Required_Marks").text(obj.Req_marks);
+                            var sub = "";
+                            var sub1 = "";
+                            var sub2 = "";
+                            var sub3 = "";
+                            //alert(sub + '-' + Subjects1+'-');
+                            if (obj.Subjects1 != null)
+                            { var sub1 = 'Subject-1: (' + obj.Subjects1 + ')';
+                                if(obj.Req_subject1_Tmarks>0)
+                                {  sub1 += 'Subject Marks:' + obj.Req_subject1_Tmarks ;}
+                                if (obj.Req_subject1_Omarks > 0)
+                                { sub1 += 'Required Percentage:' + obj.Req_subject1_Omarks + " %"; }
+                                sub1 += '\n';
+                            }
+
+                            if (obj.Subjects2 != null)
+                            { var sub2 = 'Subject-2: (' + obj.Subjects2 + ')';
+                                if(obj.Req_subject2_Tmarks>0)
+                                { sub2 += 'Subject Marks:' + obj.Req_subject2_Tmarks; }
+                                if (obj.Req_subject2_Omarks > 0)
+                                { sub2 += 'Required Percentage:' + obj.Req_subject2_Omarks + " %"; }
+                                sub2 += '\n';
+                            }
+
+                            if (obj.Subjects3 != null) {
+                                var sub3 = 'Subject-3: (' + obj.Subjects3 + ')';
+                                if (obj.Req_subject3_Tmarks > 0)
+                                { sub3 += 'Subject Marks:' + obj.Req_subject3_Tmarks; }
+                                if (obj.Req_subject3_Omarks > 0)
+                                { sub3 += 'Required Percentage:' + obj.Req_subject3_Omarks +" %"; }
+                            }
+                            sub = sub1 + sub2 + sub3;
+
+                            $("#Required_Other").text(sub);
+                        });
+
+                    }
+                });
+
+            }
+
+            function SubjectMarks( RePer, subjTo,SubOb) {
+                var MarksPrg = false;
+                var subPerstage=(SubOb*100)/subjTo;
+                if (subPerstage >= RePer && subjTo > 0 && SubOb > 0 && subjTo >=  SubOb > 0)
+                {
+                    MarksPrg = true;
+                }
+                return MarksPrg;
+            }
+        });
+
+
+
+        $(document).ready(function () {
+
+
+            $('#i_o_marks').on('input', function (e) {
+                Calcution();
+            });
+
+            $('#i_t_marks').on('input', function (e) {
+                Calcution();
+            });
+
+            function Calcution() {
+                Ob = parseFloat($('#i_o_marks').val());
+                Tb = parseFloat($('#i_t_marks').val());
+
+                if (Ob > 0 && Tb > 0) {
+                    var reslt = (Ob * 100) / Tb;
+                    $('#txtperstage').val(reslt.toFixed(2));
+                }
+            }
+        })
+
+    </script>
+}

@@ -1,0 +1,83 @@
+﻿@using ReportViewerForMvc;
+@model UOS.Models.ALL_Affiliated_Colleges_Reports
+ 
+@{
+    ViewBag.Title = "ALL_Affiliated_Colleges_Reports";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+<div class="container">
+    <h2>Affiliated Colleges Reports</h2>
+
+    @using (Html.BeginForm("ALL_Affiliated_Colleges_Reports", "AffiliationAdminSide"))
+    {
+        <div class="row">
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(reg => reg.DistrictId, new { @class = "form-check-label label " })
+                @Html.DropDownListFor(m => m.DistrictId, new SelectList(Model.DistrictDD, "ID", "Dist_Name"), new { @class = "form-control", @id = "district" })
+            </div>
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(reg => reg.TehsilId, new { @class = "form-check-label label " })
+                @Html.DropDownListFor(m => m.TehsilId, new SelectList(Model.TehsilDD, "ID", "Tehsils"), new { @class = "form-control", @id = "tehsil" })
+            </div>
+            <div class="col-md-4 form-group">
+                @Html.LabelFor(reg => reg.YearId, new { @class = "form-check-label label " })
+                @Html.DropDownListFor(m => m.YearId, new SelectList(Model.YearDD, "ID", "Year"), "-- Please Select --", new { @class = "form-control", @id = "Year" })
+                @*@Html.DropDownListFor(m => m.TehsilId, new SelectList(Model.TehsilDD, "ID", "Tehsils"), new { @class = "form-control", @id = "tehsil" })*@
+            </div>
+        </div>
+        <button class="btn-sm btn-success" id="btn_show_rpt">Shoabcw</button>
+    }
+    @if (ViewBag.ReportViewer != null)
+    {
+        @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer)
+    }
+
+</div>
+  
+    
+    
+    <script>
+    $(document).ready(function () {
+        $("#district").change(function () {
+            gettehsil();
+        });
+       
+        function gettehsil() {
+            var dist = $("#district option:selected").val();
+            $.ajax({
+                url: "../AffiliationAdminSide/selectteshil?value=" + dist,
+                method: "GET",
+                success: function (data) {
+                    $(data).each(function (index, obj) {
+                            
+                            $("#tehsil").append('<option id=' + obj.ID + '>' + obj.Tehsils + '</option>')
+                    });
+                }
+            });
+        }
+        
+    });
+    </script>
+@*<script>
+    $(document).ready(function () {
+        $("#btn_show_rpt").click(function () {
+            
+            $.ajax
+            ({
+                url: '/AffiliationAdminSide/abc',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    a: 0,b:0,c:1,
+                }),
+                
+                error: function () {
+                    toastr.error("Something went wrong..");
+                },
+            });
+
+        });
+    });
+
+</script>*@

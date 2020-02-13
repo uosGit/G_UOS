@@ -1,0 +1,129 @@
+﻿@model UOS.Models.TempAssignVisitAppIds
+@{
+    ViewBag.Title = "Com_Members";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Feedback</title>
+
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    <div class="container bg-white " style="padding:5px 20px 20px;">
+        <div class="row table-responsive table-responsive-sm m-auto">
+            <table id="visitApp" class="w-100 table table-hover nowrap table-condensed table-sm">
+                <thead class="bg-primary ">
+                    <tr class="label text-white" style="height:40px;">
+                        <td class="align-middle">Institute Id</td>
+                        <td class="align-middle">Insititute Name</td>
+                        <td class="align-middle">Principal Name</td>
+                        <td class="align-middle">Postal Address</td>
+                        <td class="align-middle">Nature</td>
+                        <td class="align-middle">Phone Number</td>
+                        <td class="align-middle">Year</td>
+                        <td class="align-middle">Applicaiton Id</td>
+                        <td class="align-middle">Year Id</td>
+                        <td class="align-middle text-right pr-3">Download</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+        </div>
+    </div>
+
+    @*@using (Html.BeginForm("DownloadForm", "AffiliationMembers"))
+        {
+            @Html.HiddenFor(m => m.InstituteId)
+            @Html.HiddenFor(m => m.YearId)
+            @Html.HiddenFor(m => m.ApplicationId)
+            <input type="submit"id="btn_submit" hidden />
+        }*@
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+
+                var DataTable = $("#visitApp").DataTable({
+                    "proccessing": true,
+                    "serverSide": true,
+                    "ajax": {
+                        "url": "../AffiliationMembers/CMDataTableViewer",
+                        "type": "POST",
+                        "datatype": "json",
+                        "dataSrc": ""
+                    },
+                    "columnDefs": [
+                      {
+                          "targets": [0, 1, 2, 5, 7, 8],
+                          "visible": false,
+                          "searchable": false
+                      }
+                    ],
+                    "columns": [
+                        {
+                            "data": "Institute_ID"
+                        },
+                        {
+                            "data": "Institute_Name"
+                        },
+                        {
+                            "data": "Principal_Name"
+                        },
+                        {
+                            "data": "postal_Address"
+                        },
+                        {
+                            "data": "Nature"
+                        },
+                        {
+                            "data": "phone_No"
+                        },
+                        {
+                            "data": "Year"
+                        },
+                        {
+                            "data": "Application_ID"
+                        },
+                        {
+                            "data": "Year_ID"
+                        },
+                        {
+                            "render": function (data, type, row) {
+                                return '<a class="btn bg-success text-white btn-rounded btn-sm py-0 px-2 vsmall" id="btn_update" href="../AffiliationMembers/DownloadForm?appId=' + row.Application_ID + '" data-owner-id="' + row.Application_ID + '" >Download</a>'
+                            }
+                        }
+                    ]
+                });//DataTable Ended Here
+                //$("#visitApp").on('click', 'button', function (e) {
+                //    e.preventDefault();
+                //    var tr = $(this).parent().parent();
+                //    var rowdata = DataTable.row(tr).data();
+
+                //    var data = {
+                //        InstituteId: rowdata.Institute_ID,
+                //        YearId: rowdata.Year_ID,
+                //        ApplicationId: rowdata.Application_ID
+                //    }
+                //    data = JSON.stringify(data);
+                    //$.ajax({
+                    //    url: "../AffiliationMembers/DownloadForm",
+                    //    method: "POST",
+                    //    contentType: "application/json; charset=utf-8",
+                    //    dataType: "json",
+                    //    data: data,
+                    //    success: function () {
+                    //        alert("hello");
+                    //    }
+                    //});
+                    //$("#InstituteId").val(rowdata.Institute_ID);
+                    //$("#YearId").val(rowdata.Year_ID);
+                    //$("#ApplicationId").val(rowdata.Application_ID);
+                    //$("#btn_submit").click();
+                    //console.log(data);
+
+                //});
+            });
+        </script>
+    }
+</body>
+</html>

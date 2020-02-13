@@ -1,0 +1,163 @@
+﻿@model UOS.Models.ComFeedBack 
+@{
+    ViewBag.Title = "AllApplications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>All Applicatioons</title>
+
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    @using (Html.BeginForm("AllApplications", "AffiliationMembers"))
+    {
+        <div class="container bg-white " style="padding:20px 20px 0px;">
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(m => m.InstituteId, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.InstituteId, new SelectList(Model.InstitutesDDL, "InstituteId", "InstituteName"), new { @class = " form-control form-control-sm", @id = "ddInstitute" })
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(m => m.CheckName, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.CheckName, new SelectList(Model.CheckPoint, "CheckName", "CheckName"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-1 col-sm-2 col-2">
+                    @Html.Label("Poor", new { @for = "Performance" , @class = "form-check-label  label" })<br />
+                    @Html.RadioButtonFor(m => m.Performance, value: "Poor")
+                </div>
+                <div class="form-group col-md-1 col-sm-2 col-2 ">
+                    @Html.Label("Fair", new { @for = "Performance" , @class = "form-check-label  label" })<br />
+                    @Html.RadioButtonFor(m => m.Performance, value: "Fair")
+                </div>
+                <div class="form-group col-md-1 col-sm-2 col-2">
+                    @Html.Label("Avg", new { @for = "Performance", @class = "form-check-label  label" })<br />
+                    @Html.RadioButtonFor(m => m.Performance, value: "Average")
+                </div>
+                <div class="form-group col-md-1 col-sm-2 col-2">
+                    @Html.Label("Good", new { @for = "Performance", @class = "form-check-label  label" })<br />
+                    @Html.RadioButtonFor(m => m.Performance, value: "Average")
+                </div>
+                <div class="form-group col-md-1 col-sm-2 col-2">
+                    @Html.Label("Excellent", new { @for = "Performance", @class = "form-check-label  label" })<br />
+                    @Html.RadioButtonFor(m => m.Performance, value: "Excellent")
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-8 col-sm-12">
+                    @Html.LabelFor(m => m.Recommendation, new { @class = "form-check-label  label" })
+                    @Html.TextBoxFor(m => m.Recommendation, new { @class = "form-control form-control-sm" })
+                </div>
+                <div class=" col-md-4 col-sm-12">
+                    <input type="submit" name="submit" class="btn btn-primary btn-rounded mt-md-4 mt-sm-0 float-right btn-sm" />
+                </div>
+            </div>
+         
+
+          
+
+
+
+
+        </div>
+
+
+    }
+
+    <div class="container bg-white " style="padding:5px 20px 20px;">
+        <hr class="my-3" />
+        <div class="row table-responsive table-responsive-sm m-auto">
+            <table id="remarkstable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                <thead class="bg-primary ">
+                    <tr class="label text-white" style="height:40px;">
+                        <td class="align-middle">Result Id</td>
+                        <td class="align-middle">application Id</td>
+                        <td class="align-middle">Institute Name</td>
+                        <td class="align-middle">Description</td>
+                        <td class="align-middle">Marks</td>
+                        <td class="align-middle">Recommendation</td>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+      
+
+    </div>
+
+@section scripts{
+    <script>
+
+        //$(function () {
+        //    $("#btn_FeedbackRcmdSeats").click(function () {
+        //        $.loca
+        //        });
+        //    });
+        //});
+        $('#ddInstitute').change(function () {
+            var DataTable = $("#remarkstable").DataTable();
+            DataTable.destroy();
+            pop_recomandations();
+        });
+        $(document).ready(function () {
+            pop_recomandations();
+        });
+
+
+        function pop_recomandations() {
+            $(document).ready(function () {
+                var id = $('#ddInstitute').val();
+                var DataTable = $("#remarkstable").DataTable({
+
+                    "proccessing": true,
+                    "serverSide": true,
+                    "ajax": {
+                        "url": "../AffiliationMembers/AllADataTableViewer?id=" + id,
+                        "type": "POST",
+                        "datatype": "json",
+                        "dataSrc": ""
+                    },
+                    "columnDefs": [
+                        {
+                            "targets": [0, 1],
+                            "visible": false,
+                            "searchable": false
+                        }
+                    ],
+
+                    "columns": [
+                        {
+                            "data": "Result_ID"
+                        },
+                        {
+                            "data": "application_id"
+                        },
+                        {
+                            "data": "Ins_Name"
+                        },
+                        {
+                            "data": "description"
+                        },
+                        {
+                            "data": "obs_marks"
+                        },
+                        {
+                            "data": "Recmondation"
+                        }
+
+                    ]
+                });
+            });
+        }
+
+
+
+
+    </script>
+}
+
+</body>
+
+</html>

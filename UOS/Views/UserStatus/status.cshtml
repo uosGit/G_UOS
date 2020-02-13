@@ -1,0 +1,267 @@
+﻿@model UOS.Models.UserClasses.UserStatus
+@{
+    ViewBag.Title = "Status";
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/themify-icons/themify-icons.css" rel="stylesheet" />
+    
+            
+
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <title>status</title>
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <p>
+                <button class="btn btn-primary btn-block float-left" data-toggle="collapse" data-target="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Application Overview
+                </button>
+                <button class="btn btn-primary btn-block float-right" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                    Status Panel
+                </button>
+                <a class="btn btn-primary btn-block float-right"  href="../accounts/logout" aria-expanded="false" aria-controls="collapseExample">
+                    LogOut
+                </a>
+            </p>
+        </div>
+
+        <div class="collapse" id="collapseExample">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <h3 style="text-align:center;">APPLICATION FOR GRANT OF AFFILIATION WITH </h3>
+                        <hr />
+                        <h3 style="text-align:center;">UNIVERSITY OF SARGODHA</h3>
+                    </div>
+                </div>
+            </div>
+
+            @*   Details Of The Organization having the pending App*@
+
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11" style="border:1px solid black;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="text-dark font-weight-normal ml-3 ">Name Of the Institution</label><label style=""> @Model.InstituteName</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-dark font-weight-normal ml-3 ">Name Of the Principal </label> <label>@Model.PrincipalName</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="text-dark font-weight-normal">Postal Address </label> <label>@Model.PostalAddress</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-dark font-weight-normal ml-4 pl-3">Phone No (Off)</label> <label>@Model.PhoneNumber</label>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="text-dark font-weight-normal ml-3 ">Fax No</label> <label>@Model.FaxNumber</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover table-condensed">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Attachment</td>
+                    @*<td>No</td>
+                    <td>N/A</td>*@
+                </tr>
+                <tr>
+                    <td>1.</td>
+                    <td>Program / Subject Applied For affiliation</td>
+                    <td>Incase of Degree Classes attach list of Elective and optional Subjects at <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "A" }) ">Ann-A</a></td>
+                    @*<td>Incase of Degree Classes attach list of Elective and optional Subjects at <a href="javascript:functioabc()" >Ann-A</a></td>*@
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Subject already Affiliated ( if any ) Reference No.</td>
+                    <td>Attach list at  <a href="#">Ann-B.</a>  along with university of sargodha letter.Please provide the <a href="#">certificate</a> the no course / discipline is being run in collaboration with any other university other then university of sargodha . In the otherwise case attach the list of Subject / disciplines along with the letter of the university. <a>Ann-B(i).</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>3.</td>
+                    <td>Pending for table row</td>
+                    <td>@*Attach list at  <a href="#">Ann-B.</a>  along with university of sargodha letter.Please provide the <a href="#">certificate</a> the no course / discipline is being run in collaboration with any other university other then university of sargodha . In the otherwise case attach the list of Subject / disciplines along with the letter of the university. <a>Ann-B(i).</a>*@</td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>4.</td>
+                    <td>NOC From The Govt. concerned (Eaducation Department)</td>
+                    <td>Attach  <a href="#">Ann-C.</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>5.</td>
+                    <td>Prospectus / brochure</td>
+                    <td>Attach  <a href="#">Ann-D.</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>6.</td>
+                    <td>Building</td>
+                    @*<td>Attach detail on  <a href="#">Form No. 1</a></td>*@
+                    <td>Attach detail on <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F1" }) ">Form No. 1</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>7.</td>
+                    <td>Students Hostel ( If any )</td>
+                    <td>Attach the detail of Hostel facilities along with detail of resident students / staff  <a href="#">Ann-E.</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>8.</td>
+                    <td>Staff Residences</td>
+                    <td>Attach the detail of Staff Residences  <a href="#">Ann-F.</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>9.</td>
+                    <td>
+                        Finances:
+                        <ul>
+                            <li>Development Funds</li>
+                            <li>Recurring Funds</li>
+                            <li>Reserve Funds</li>
+                        </ul>
+                    </td>
+                    @*<td>Attach the detail on  <a href="#">Form No. 2 </a> and <a href="#">Form No. 3</a></td>*@
+                    <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F2" }) ">Form No. 2</a> and <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F3" }) ">Form No. 3</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>10.</td>
+                    <td>Sports Facilities / Ground Equipment</td>
+                    <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F4" }) ">Form No. 4</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>11.</td>
+                    <td>Teaching Staff</td>
+                    <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F5" }) ">Form No. 5</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>12.</td>
+                    <td>Non-Teaching Staff</td>
+                    <td>Attach the detail on <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F6" }) ">Form No. 6</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>13.</td>
+                    <td>Library</td>
+                    <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F7" }) ">Form No. 7</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>14.</td>
+                    <td>Laboratories and Equipment</td>
+                    <td>Attach the detail on  <a href="@Url.Action("Action", "AffiliationAdminSide/AffRptViewer", new { Rept = "F8" }) ">>Form No. 8</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>15.</td>
+                    <td>Others Detail</td>
+                    <td><a href="#">View</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+                <tr>
+                    <td>16.</td>
+                    <td>Demand Draft</td>
+                    <td><a href="#">View</a></td>
+                    <td><span class="ti-clip gi-2x text-danger"></span></td>
+                </tr>
+            </table>
+
+
+        </div>
+        <div class="collapse" id="collapseExample2">
+
+
+
+            <div class="row">
+                <div class="card w-100">
+                    <div class="card-header">
+                        <h4 class="text-center">STATUS PANEL</h4>
+                    </div>
+                    <div class="card-body">
+                        <label class="text-danger" id="status">@Model.Status</label>
+                        @if (@Model.ReturnStatusIdentity == 2)
+                        {
+                            <a class="text-danger" href="../UserStatus/UploadSecurityDeposite" id="status">@Model.StatusValueFOrLink</a>
+                            <label class="text-danger" id="status">@Model.Status1</label>
+
+                        }
+                    </div>
+                    <div class="card-footer ">
+                        @using (Html.BeginForm("PDF", "UserStatus"))
+                        {
+                            <button class="btn btn-primary btn-rounded  mt-2 float-left btn-sm"> Download Files </button>
+                        }
+                        @if (Model.ReturnStatusIdentity == 2)
+                        { 
+                        <a class="link btn btn-rounded btn-success float-right" href="../UserStatus/UploadSecurityDeposite">click here to upload your scan</a>
+                        }   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+        {
+            <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+        }
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+        if (!string.IsNullOrEmpty(ViewBag.Exception))
+        {
+            <script type="text/javascript">toastr.error("@ViewBag.Exception ")</script>
+        }
+    }
+
+    @section scripts{
+    <script> 
+        $(document).ready(function () {
+            $.ajax({
+                url: "/UserStatus/StatusViewer",
+                type: "GET",
+                success: function (status) {
+                    if (status == 9) {
+                        $("#deposite").hide();
+                        $("#desposite").show();
+                    }
+                }
+            });
+        });
+        
+    </script>
+
+
+
+    }
+
+
+</body>
+
+</html>

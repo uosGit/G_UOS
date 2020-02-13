@@ -1,0 +1,206 @@
+﻿@model UOS.Models.UserClasses.DemandDraft
+@{
+    ViewBag.Title = "ReturnStatus";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+<style>
+    .model-dialog-custom {
+        max-width: 90% !important;
+    }
+</style>
+<div class="row table-responsive table-responsive-sm mx-auto">
+    <table id="table" class="w-100 table table-hover nowrap table-condensed table-sm">
+        <thead class="bg-primary1">
+            <tr class="label text-white" style="height:40px;">
+                <td class="align-middle">Program</td>
+                <td class="align-middle">Send Date</td>
+                <td class="align-middle">No. Reject</td>
+                <td class="align-middle">No. Send</td>
+                <td class="align-middle">No. Already Reg</td>
+                <td class="align-middle">Document</td>
+                <td class="align-middle">Download</td>
+                <td class="align-middle">View</td>
+                <td class="align-middle">Upload Challan</td>
+
+
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog model-dialog-custom" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Your Challan Form Detail.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+@using (Html.BeginForm("uploadChallanForm", "Registration", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group col-md-3 col-sm-6">
+                            @Html.LabelFor(reg => reg.bank_name, new { @class = "form-check-label label" })
+                            @Html.TextBoxFor(reg => reg.bank_name, new { @class = "form-control form-control-sm", @placeholder = "xyz Bank limited", @required = "true" })
+                            @Html.ValidationMessageFor(reg => reg.bank_name)
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                            @Html.LabelFor(reg => reg.branch_code, new { @class = "form-check-label label" })
+                            @Html.TextBoxFor(reg => reg.branch_code, new { @class = "form-control form-control-sm", @type = "number", @placeholder = "00423", @required = "true" })
+                            @Html.ValidationMessageFor(reg => reg.branch_code)
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                            @Html.LabelFor(reg => reg.deposite_date, new { @class = "form-check-label label" })
+                            @Html.TextBoxFor(reg => reg.deposite_date, new { @class = "form-control datepicker form-control-sm", @type = "date" })
+                            @Html.ValidationMessageFor(reg => reg.deposite_date)
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                            @Html.LabelFor(reg => reg.FileName, new { @class = "form-check-label label" })
+                            <input type="file" name="ImageFile" />
+                            
+                        </div>
+                        
+                         @Html.HiddenFor(reg => reg.Id, new { Value = "0",@id="someid" })
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary"> upoad Scan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+}
+            </div>
+        </div>
+    </div>
+
+
+
+ 
+<script src="~/Scripts/toastr.js"></script>
+
+@{
+    if (!string.IsNullOrEmpty(ViewBag.messageshow))
+    {
+        <script type="text/javascript">toastr.success(@ViewBag.messageshow)</script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.ApplicationIdNotFound))
+    {
+        <script type="text/javascript">toastr.success(@ViewBag.DDImageNull)</script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Exception))
+    {
+        <script type="text/javascript">toastr.success(@ViewBag.Exception)</script>
+    }
+}
+
+@section scripts{
+<script>    
+    $(document).ready(function () {
+
+        $('#exampleModal').on('shown.bs.modal', function () {
+            $('#myInput').trigger('focus')
+        });
+
+
+        $("#table").DataTable({
+            ajax: {
+                url: "../Registration/dtblReturnStatus",
+                dataSrc: ""
+            },
+            columns: [
+               {
+                   data: "Program_Desc"
+               },
+               {
+                   data: "return_send_date"
+               },
+               {
+                   data: "no_stu_Reject"
+               },
+               {
+                   data: "StuInReturn"
+               },
+               {
+                   data: "AlreadyRegisterd"
+               },
+               {
+                   render: function (data, type, row) {
+                       return '<select  id="dd_catage" data-ReturnTyp="' + row.ReturnId + '><option value="0">--Select--</option><option value="1">Annex-A</option><option value="2">Annex-B</option><option value="3">Annex-C</option><option value="4">Fee Slip</option></select>'
+                   }
+               },
+               {
+                  render: function (data, type, row)
+                    {
+                      return '<button class="btn btn-success btn-rounded btn-sm py-0 px-2 vsmall" id="btn_download" data-ReturnId="' + row.ReturnId + '">Download</button>'
+                    }
+               },
+               {
+                   render: function (data, type, row) {
+                       return '<button class="btn btn-success btn-rounded btn-sm py-0 px-2 vsmall" id="btn_View" data-ReturnId="' + row.ReturnId + '">View</button>'
+                   }
+               }
+               ,
+               {
+                   render: function (data, type, row) {
+                       return '<button type="button" class="btn btn-success btn-rounded btn-sm py-0 px-2 vsmall" data-toggle="modal" id="btn_challan" data-target="#exampleModal" data-return_IDChalan= "' + row.ReturnId + '">upload</button>'
+                   }
+               }
+               
+            ]
+        });
+        // data table ending
+        // view button call
+        $("#table").on("click", "#btn_View", function (e) {
+            e.preventDefault();
+            var ReturnId = $(this).attr("data-ReturnId");
+            $(location).attr('href', '/Registration/StuWRTReturn?returnId='+ReturnId +'');
+        });
+
+            $("#table").on("click", "#btn_challan", function (e) {
+            e.preventDefault();
+            var ReturnId = $(this).attr("data-return_IDChalan");
+            $("#someid").attr("Value", ReturnId);
+        });
+
+        // Download button call
+            var tableasd = $('#table').DataTable();
+            $("#table").on("click", "#btn_download", function (e) {
+                
+
+                
+                
+           e.preventDefault();
+          ////  alert($('#dd_catage option:selected').text());
+          //  var catg =  $(this).$('#dd_catage').val();
+          //  toastr.error("Pending", "will download challan according to return");
+            var ReturnId = $(this).attr("data-ReturnId");
+          //  alert(catg);
+            $(location).attr('href', '/Registration/DownloadFeeSlip?returnId=' + IDForDownloadinForChallanForm + ReturnId + '');
+            });
+
+
+            $("#table").on("change", "#dd_catage", function (e) {
+                IDForDownloadinForChallanForm = $(this).val();
+            });
+
+            var IDForDownloadinForChallanForm = "1";
+
+
+
+
+
+// ready function ending
+    });
+</script>
+
+
+
+
+
+}

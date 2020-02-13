@@ -1,0 +1,167 @@
+﻿@model UOS.Models.UserClasses.Affiliation
+@{
+    ViewBag.Title = "Affiliation";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Affiliation Form</title>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+ 
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    @using (Html.BeginForm("Affiliation", "UserAccount"))
+    {
+        <div class="container bg-white " style="padding:20px;">
+            <h6 class="mt-2">SELECT THE DISCIPLINE FOR AFFILIATION </h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6 ">
+                    @Html.LabelFor(m => m.category, new { @class = "form-check-label label" })
+                    @Html.DropDownListFor(m => m.category, new SelectList(Model.objCat, "catId", "category"), new { @class = "form-control form-control-sm", @id = "ddlcat" })
+                </div>
+                <div class="form-group col-md-4 col-sm-6">
+                    @Html.LabelFor(m => m.discipline, new { @class = "form-check-label label" })
+                    @Html.DropDownListFor(m => m.discipline, new SelectList(Model.objprogram, "program_id", "program_Desc"), new { @class = "form-control form-control-sm", @id = "ddlProgram" })
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.year, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.year, new { @class = "form-control form-control-sm" , @readonly="True"})
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.no_seats, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.no_seats, new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-1 col-sm-6">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                </div>
+
+
+            </div>
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="table" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <td class="align-middle">Name</td>
+                            <td class="align-middle">Category</td>
+                            <td class="align-middle">Year</td>
+                            <td class="align-middle">Seats</td>
+                            <td class="align-middle">Update</td>
+                            <td class="align-middle">Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/Last"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/OtherDoc "> Previous </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    }
+   
+@section scripts{
+    <script>
+        $('#ddlcat').change(function () {
+            getcourse();
+        });
+        //$("#table").on("click", "#btn_update", function () {
+        //    var id = $(this).attr("data-info-id");
+        //    $(location).attr('href', "/UserAccount/AffiliationUpdate?id=" + id);
+        //});
+
+        $("#table").on("click", "#btn_delete", function () {
+            var id = $(this).attr("data-info-id");
+            $.ajax({
+                url: "../UserAccount/DeleteAffiliation?id=" + id,
+                type: "GET",
+                success: function (data) {
+                    table.ajax.reload();
+                    toastr.success(data.responseText);
+                }
+            });
+        });
+
+        var table=$("#table").DataTable({
+            ajax: {
+                url: '../UserAccount/AffDataTableViewer',
+                dataSrc:""
+            },
+            columns: [
+                {
+                    data: "Program_Name"
+                },
+                {
+                    data:"Category"
+                },
+                {
+                    data: "Year"
+                },
+                {
+                    data: "No_Of_Seats"
+                },
+                {
+                    render: function (data, type, row) {
+                        return "<a class='btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall' href='../UserAccount/AffiliationUpdate?id="+row.ID+"' id='btn_update' data-info-id='" + row.ID + "'>Update</a>"
+                    }
+                },
+                {
+                    render: function (data, type, row) {
+                        return "<button class='btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall' id='btn_delete' data-info-id='" + row.ID + "'>Delete</button>"
+                    }
+                }
+            ]
+        });
+        // function get cources
+        function getcourse()
+        {
+            var val;
+            var cat = $("#ddlcat option:selected").text();
+            if (cat === 'Anual')
+            {
+                val = true;
+            }
+            else
+            {
+                val = false;
+            }
+            $.ajax
+            ({
+                url: '../UserAccount/Pop_program',
+                type: 'POST',
+                datatype: 'application/json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    val: +val
+                }),
+                success: function (result) {
+                    $("#ddlProgram").html("");
+                    $("#ddlProgram").append($('<option></option>').html("------Select Program------"))
+                    $.each($.parseJSON(result), function (i, obj) {
+                        $("#ddlProgram").append($('<option></option>').val(obj.ID).html(obj.Program_Name))
+                    })
+                },
+                error: function () {
+                    toastr.error("Something went wrong..");
+                },
+            });
+            }
+        
+    </script>
+    }
+
+
+</body>
+
+</html>
+
+

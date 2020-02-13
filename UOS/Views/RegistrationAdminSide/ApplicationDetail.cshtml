@@ -1,0 +1,623 @@
+﻿
+
+@{
+    ViewBag.Title = "ApplicationDetail";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+<div class="container bg-white">
+@using (Html.BeginForm("ApplicationDetail", "RegistrationAdminSide"))
+{
+    @*Main Heading In the Page*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="p-3">
+                <h3 style="text-align: center; font-family: 'Century Schoolbook';">UNIVERSITY OF SARGODHA</h3>
+                <hr />
+                <h5 style="text-align: center; font-family: 'Century Schoolbook';">STUDENT ELIGIBILITY APPLICATION FOR ADMISSION</h5>
+            </div>
+        </div>
+    </div>
+    @*   Details Of The Student*@
+    <div class="row">
+        <div class="col-md-12" >
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Application Detail</p>
+            <div class="row mb-3">
+                <div class="col-md-8">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="text-dark ml-3 label">Registration No:</label>
+                               
+                            </div>
+                            <div class="col-md-9">
+                                <label class=" ml-2 u-text border-bottom border-secondary">@Model.Reg_Num</label>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="text-dark ml-3 label">Roll No: </label>
+                               
+                            </div>
+                            <div class="col-md-9">
+                                <label class=" ml-2 border-bottom border-secondary">@Model.Roll_No</label>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="text-dark ml-3 label ">College Name:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <label class=" ml-2 border-bottom border-secondary">@Model.College_Name</label>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    @*<div class="col-md-6">
+                        <label class="text-dark label ml-3 ">District:</label> <label class="  ml-2 border-bottom border-secondary">@Model.District</label>
+                    </div>*@
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="text-dark label ml-3">Program: </label>
+                      
+                            </div>
+                            <div class="col-md-9">
+                                <label class="  ml-2 border-bottom border-secondary">@Model.Program</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="text-dark label pl-3">Session: </label>
+                         
+                            </div>
+                            <div class="col-md-9">
+                                <label class="  ml-2 border-bottom border-secondary">@Model.Sesion</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="avatar-upload">
+                        
+                        <div class="" title="Upload Passport Size Photo">
+                            <div id="imagePreview" class="img">
+                                <img alt="" src="@Model.ImageSource" height="200px" width="150px" style="display: inline; margin-right: 5px;" />
+                                @*<img id="Pic_image" class="img-fluid img-responsive h-50 w-50" src="@Model.ImageSource" />*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Personal Detail</p>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Name:</label>
+                            
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 u-text border-bottom border-secondary">@Model.student_Name</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">CNIC: </label>
+                       
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.student_Cnic</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Father Name:</label>
+                    
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.Father_Name</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Father CNIC:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.Father_Cnic</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3">DOB: </label>
+                        </div>
+                        <div class="col-md-9">
+
+                            <label class="  ml-2 border-bottom border-secondary ">@Model.DOB</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label pl-3">Religion: </label>
+                     
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.Religion</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label pl-3">Gender: </label>
+                       
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.Gender</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label pl-3">Contact No: </label>
+                            
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.ContactNo</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label pl-3">Email: </label>
+                          
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.EmailID</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label pl-3">Address: </label>
+                           
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.Address</label>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-12">
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Matric Detail</p>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Degree Name:</label>
+                         
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 u-text border-bottom border-secondary">@Model.M_DegreeName</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Passing Year: </label>
+                           
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.M_PassYear</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Total Marks:</label>
+                        
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.M_Total</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Obtained Marks:</label>
+                        </div>
+                        <div class="col-md-9">
+
+                            <label class="  ml-2 border-bottom border-secondary">@Model.M_Obtain</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3">Percentage: </label>
+                           
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary ">@Model.M_Perstage</label>
+                        </div>
+                    </div>
+                   
+                </div>
+               
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12">
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Inter Detail</p>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Degree Name:</label>
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 u-text border-bottom border-secondary">@Model.I_DegreeName</label>
+                        </div>
+                   </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Passing Year: </label>
+                       
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_PassYear</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Subject 1:</label>
+                      
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Subject1</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Obtained/Total Marks:</label>
+                           
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Subject1_Marks</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Subject 2:</label>
+                        
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Subject2</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Obtained/Total Marks:</label>
+                        </div>
+                        <div class="col-md-9">
+
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Subject2_Marks</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Subject 3:</label>
+                          
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Subject3</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Obtained/Total Marks:</label>
+             
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Subject3_Marks</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Total Marks:</label>
+                     
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Total</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Obtained Marks:</label>
+                  
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.I_Obtain</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3">Percentage: </label>
+           
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary ">@Model.I_Perstage</label>
+                        </div>
+                    </div>
+                   
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12" id="bch_Dev">
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Bachelors Detail</p>
+            <div class="row">
+
+                @*<div class="col-md-6">
+                    <label class="text-dark ml-3 label">Degree Name:</label><label class="  ml-2 u-text border-bottom border-secondary">@Model.B_Degree</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark ml-3 label">Degree Type:</label><label class="  ml-2 u-text border-bottom border-secondary">@Model.B_DegreeType</label>
+                </div>*@
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Program:</label>
+
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 u-text border-bottom border-secondary">@Model.B_DegreeName</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label">Passing Year: </label>
+
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary" id="lb_Bch_P_year">@Model.B_PassYear</label>
+                        </div>
+                    </div>
+
+                </div>
+                @*<div class="col-md-6">
+                    <label class="text-dark ml-3 label ">Subject 1:</label><label class="  ml-2 border-bottom border-secondary">@Model.B_Subject1</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark label ml-3 ">Obtained/Total Marks:</label> <label class="  ml-2 border-bottom border-secondary">@Model.B_Subject1_Marks</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark ml-3 label ">Subject 2:</label><label class="  ml-2 border-bottom border-secondary">@Model.B_Subject2</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark label ml-3 ">Obtained/Total Marks:</label> <label class="  ml-2 border-bottom border-secondary">@Model.B_Subject2_Marks</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark ml-3 label ">Subject 3:</label><label class="  ml-2 border-bottom border-secondary">@Model.B_Subject3</label>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-dark label ml-3 ">Obtained/Total Marks:</label> <label class="  ml-2 border-bottom border-secondary">@Model.B_Subject3_Marks</label>
+                </div>*@
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark ml-3 label ">Total Marks:</label>
+
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.B_Total</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3 ">Obtained Marks:</label>
+
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary">@Model.B_Obtain</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text-dark label ml-3">Percentage: </label>
+
+                        </div>
+                        <div class="col-md-9">
+                            <label class="  ml-2 border-bottom border-secondary ">@Model.B_Perstage</label>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-12">
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Eligibility Criteria</p>
+            <div class="row">
+                <div class="col-md-2">
+                    <label class="text-dark  label ml-3">Eligibility Criteria: </label>
+
+                </div>
+                <div class="col-md-10">
+                    <label class="  ml-2 border-bottom border-secondary ">@Model.Elegibelty</label>
+                </div>
+            </div>
+            <p class="bg-primary pl-3 rounded p-1 text-white label">Eligibility</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="container label">Accept
+                        @*<input type="radio"  name="radio">*@   
+                         @Html.RadioButton("AppStatus", "Yes")
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="container label">
+                        Reject
+                        @*<input type="radio"  name="radio">*@
+                        @Html.RadioButton("AppStatus", "No")
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <label class="container label">Pending
+                        @*<input type="radio" name="radio">*@  
+                         @Html.RadioButton("AppStatus", "Pending")
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-12 text-center my-4">
+            @*<a class="btn btn-success btn-rounded  mt-2 px-5  btn-sm text-center" href="#" id="btsub"> Submit </a>*@
+            <button type="submit" class="btn btn-success btn-rounded  mt-2 px-5  btn-sm text-center" id="btsub">Submit</button>
+        </div>
+    </div>
+   
+
+}
+
+</div>
+
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        var bch = $('#lb_Bch_P_year').text();
+        if (bch == "") {
+            // alert(bch);
+            $('#bch_Dev').hide();
+        }
+        $('#btsub').prop('disabled', true);
+        $(':radio[name=AppStatus]').change(function () {
+            var vlu = $(this).val()
+            $('#btsub').prop('disabled', false);
+        });
+            
+    });
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                $('#imagePreview').hide();
+                $('#imagePreview').fadeIn(650);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imageUpload").change(function () {
+        readURL(this);
+    });
+</script>
+
+
+

@@ -1,0 +1,98 @@
+﻿@model UOS.Models.AffiliationCommitteeMember
+@{
+    ViewBag.Title = "EditCommitteeMember";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+@Scripts.Render("~/Scripts/jqueryval")
+@using (Html.BeginForm("CreateCommitteeMember", "AffiliationAdminSide"))
+{
+    <div class="container">
+        <div class="row">
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Name, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.ACMember.Name, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Name)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.CNIC, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.ACMember.CNIC, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.CNIC)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Cell, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.ACMember.Cell, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Cell)
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Designation, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.ACMember.Designation, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Designation)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Department, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.ACMember.Department, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Department)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.com_designation_ID, new { @class = "form-check-label label" })
+                @Html.DropDownListFor(m => m.ACMember.com_designation_ID, new SelectList(Model.AsMember, "Id", "Designation"), new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.com_designation_ID)
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.UserName, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.Password, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.ACMember.ID)
+        @Html.HiddenFor(m => m.UserId)
+        <div class="col-md-12">
+            <button class="btn bg-update btn-rounded btn-sm">Submit</button>
+        </div>
+    </div>
+}
+@{
+    if (TempData["ModelState"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["ModelState"].ToString()")</script>
+    }
+
+    if (TempData["CreatedSuccessfully"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["CreatedSuccessfully"].ToString()")</script>
+    }
+
+    if (TempData["UserCreateError"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["UserCreateError"].ToString()")</script>
+    }
+
+    if (TempData["UpdatedSuccessfully"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["UpdatedSuccessfully"].ToString()")</script>
+    }
+
+    if (TempData["UserNotExist"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["UserNotExist"].ToString()")</script>
+    }
+
+    if (TempData["Exception"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Exception"].ToString()")</script>
+    }
+}

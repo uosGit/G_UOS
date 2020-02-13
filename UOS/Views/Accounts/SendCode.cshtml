@@ -1,0 +1,16 @@
+﻿@model UOS.Models.TwoFactorAuthentication.LoginVerification
+@{
+    ViewBag.Title = "SendCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SendCode</h2>
+
+@using (Html.BeginForm("SendCode", "Accounts"))
+{
+    
+    @Html.LabelFor(model => model.Provider)
+    @Html.DropDownListFor(model => model.Provider, new SelectList(Model.ProviderDD, "Name", "Name"), new { @class = "form-control form-control-sm" })
+    
+    <button class="btn-sm btn-primary">Select</button>
+}

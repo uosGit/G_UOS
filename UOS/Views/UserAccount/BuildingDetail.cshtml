@@ -1,0 +1,179 @@
+﻿@model UOS.Models.UserClasses.BuildingDetail
+@{
+    ViewBag.Title = "BuildingDetail";
+}
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>BuildingDetail Form</title>
+    <script src="~/Scripts/toastr.min.js"></script>
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/jqueryval")
+    
+
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    @using (Html.BeginForm("BuildingDetail", "UserAccount", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="container bg-white " style="padding:20px;">
+            <h6 class="mt-2">PLEASE ENTER BUILDING'S DETAILS</h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.building_name, new { @class = "form-check-label label " })
+                    @Html.TextBoxFor(reg => reg.building_name, new { @class = "form-control form-control-sm" , @placeholder = "Building Name" ,@required ="true"})
+                    @Html.ValidationMessageFor(reg => reg.building_name)
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.c_area, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.c_area, new { @class = "form-control form-control-sm", @placeholder = "square feets", @required = "true", @type = "number" })
+                    @Html.ValidationMessageFor(reg => reg.c_area)
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.uc_area, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.uc_area, new { @class = "form-control form-control-sm" ,@placeholder = "square feets", @required = "true", @type = "number"})
+                    @Html.ValidationMessageFor(reg => reg.uc_area)
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.FileName, new { @class = "form-check-label label" })
+                    <input type="file" name="ImageFile" />
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                </div>
+
+            </div>
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="buildingtable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <th class="align-middle">Building Name</th>
+                            <th class="align-middle">UnCovered Area</th>
+                            <th class="align-middle">Covered Area</th>
+                            <th class="align-middle">View Map</th>
+                            <th class="align-middle">Update</th>
+                            <th class="align-middle">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/RoomDetail"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/CollegeOwner"> Previous </a>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+
+    }
+
+    @{
+        if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+        {
+            <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+        }
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()") </script>
+        }
+        if (TempData["Exception"]!= null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString() ")</script>
+        }
+    }
+    <script>
+        function crossfunction() {
+            $("#overlay").remove();
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            
+            $("#buildingtable").on("click", "#btn_delete", function (e) {
+                e.preventDefault();
+                var id=$(this).attr("data-info-id");
+                $.ajax({
+                    url: "../UserAccount/RemoveBuildingDetail?id="+id,
+                    method: "Get",
+                    success: function (data) {
+                            table.ajax.reload();
+                            toastr.success(data.responseText);
+                            
+                    }
+                });
+            });
+
+            $("#buildingtable").on("click", "#btn_viewmap", function (e) {
+                e.preventDefault();
+                var id=$(this).attr("data-info-id");
+                $.ajax({
+                    url: "../UserAccount/ShowBuildingMap?id=" + id,
+                    method: "Get",
+                    success: function (data) {
+                        console.log(data);
+                            //var src = $(this).attr("src");
+                            if (Object.keys($("#overlay")).length < 1) {
+                                var overlay = $('<div id="overlay" class="container-fluid"></div>');
+                                overlay.appendTo(document.body);
+                                $("#overlay").append('<img src="'+data+'" class="img-fluid rounded" id="overlayimg" alt="Alternate Text" />');
+                                $("#overlay").append('<button onclick="crossfunction()" class="btn btn-warning" id="close">x</button>');
+                            }
+                    },
+
+                });
+            });
+            var table = $("#buildingtable").DataTable({
+                "ordering": false,
+                ajax: {
+                    url: "../UserAccount/BDetailDataTableViewer",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+                        data: "building_name"
+                    },
+                    {
+                        data:"uc_area"
+                    },
+                    {
+                        data: "c_area"
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return '<button class="btn btn-primary text-white btn-rounded btn-sm py-0 px-2 vsmall" data-info-id="' + row.Id + '" id="btn_viewmap">View</button>'
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return '<a class="btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall" href="../UserAccount/BuildingDetailUpdate?id='+row.Id+'" data-info-id="' + row.Id + '" id="btn_update">Update</a>'
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return '<button class=" btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall" data-info-id="' + row.Id + '" id="btn_delete">Remove</button>'
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+
+
+

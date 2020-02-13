@@ -1,0 +1,111 @@
+﻿@model UOS.Models.UserClasses.Affiliation
+@{
+    ViewBag.Title = "AffiliationUpdate";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>AffiliationUpdate Form</title>
+</head>
+<body class=" form-control-sm">
+    @using (Html.BeginForm("Affiliation", "UserAccount"))
+    {
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-md-9 col-lg-7 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h3 class="card-title text-center" style="font-weight:600;">Affiliation Update</h3>
+                            <hr class="my-4" />
+                            <div class="form-signin">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.category, new { @class = "form-check-label label" })
+                                        @Html.DropDownListFor(m => m.category, new SelectList(Model.objCat, "catId", "category"), new { @class = "form-control form-control-sm", @id = "ddlcat" })
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.discipline, new { @class = "form-check-label label" })
+                                        @Html.DropDownListFor(m => m.discipline, new SelectList(Model.objprogram, "program_id", "program_Desc"), new { @class = "form-control form-control-sm", @id = "ddlProgram" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    @*<div class="form-group col-md-4">
+                                        @Html.LabelFor(reg => reg.year, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.year, new { @class = "form-control form-control-sm", @readonly = "True" })
+                                    </div>*@
+                                    <div class="form-group col-md-4">
+                                        @Html.LabelFor(reg => reg.no_seats, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.no_seats, new { @class = "form-control form-control-sm" })
+
+                                        @Html.HiddenFor(reg => reg.Id)
+                                    </div>
+                                  
+                                </div>
+                                <button class="btn btn-primary btn-block text-uppercase mt-4">Update</button>
+                                <hr class="my-4" />
+
+                                <a class="d-block text-center mt-2" href="../UserAccount/Affiliation">Back</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#ddlcat').change(function () {
+                getcourse();
+            });
+        });
+       
+        // function get cources
+        function getcourse()
+        {
+            var val=null;
+            var cat = $("#ddlcat option:selected").text();
+            if (cat === 'Anual')
+            {
+                val = true;
+            }
+            else (cat === 'Term')
+            {
+                val = false;
+            }
+            if (val != null) {
+                $.ajax
+                ({
+                    url: '../UserAccount/Pop_program',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        val: +val
+                    }),
+                    success: function (result) {
+                        $("#ddlProgram").html("");
+                        $("#ddlProgram").append($('<option></option>').html("------Select Program------"))
+                        $.each($.parseJSON(result), function (i, obj) {
+                            $("#ddlProgram").append($('<option></option>').val(obj.ID).html(obj.Program_Name))
+                        })
+                    },
+                    error: function () {
+                        toastr.error("Something went wrong..");
+                    },
+                });
+            }
+        }
+        
+        </script>
+        </body>
+
+        </html>
+
+

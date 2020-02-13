@@ -1,0 +1,16 @@
+﻿@model UOS.Models.TwoFactorAuthentication.LoginVerification
+@{
+    ViewBag.Title = "VerifyCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>VerifyCode</h2>
+
+@using (Html.BeginForm("VerifyCode", "Accounts"))
+{
+    @Html.HiddenFor(model => model.Provider)
+    @Html.LabelFor(model => model.Code)
+    @Html.TextBoxFor(model => model.Code, new { @class="form-control"})
+    <hr />
+    <button class="btn-sm btn-secondary">Verify</button>
+}

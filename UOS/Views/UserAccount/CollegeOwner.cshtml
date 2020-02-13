@@ -1,0 +1,136 @@
+﻿@model UOS.Models.UserClasses.CollegeOwner
+@{
+    ViewBag.Title = "CollegeOwner";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>collegeOwner Form</title>
+    @Scripts.Render("~/Scripts/jqueryval")
+    <script src="~/Scripts/toastr.min.js"></script>
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    @using (Html.BeginForm("CollegeOwner", "UserAccount"))
+    {
+        <div class="container bg-white " style="padding:20px;">
+            <h6 class="mt-2">PLEASE ENTER COLLEGE OWNER'S DETAILS</h6>
+            <hr class="my-3" />
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.owner_name, new { @class = "form-check-label label " })
+                    @Html.TextBoxFor(reg => reg.owner_name, new { @class = "form-control form-control-sm" , @placeholder = "Owner Complete Name" ,@required ="true"})
+                    @Html.ValidationMessageFor(reg => reg.owner_name)
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.cnic, new { @class = "form-check-label label label" })
+                    @Html.TextBoxFor(reg => reg.cnic, new { @class = "form-control form-control-sm", @required = "true", @placeholder = "12345-1234567-1", @pattern = "^[0-9]{5}-[0-9]{7}-[0-9]{1}$" })
+                    @Html.ValidationMessageFor(reg => reg.cnic)
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(reg => reg.contact, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.contact, new { @class = "form-control form-control-sm", @required = "true", @placeholder = "03123456789", @type = "number" })
+                    @Html.ValidationMessageFor(reg => reg.contact)
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                </div>
+               
+            </div>
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="ownertable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <th class="align-middle">Owner Name</th>
+                            <th class="align-middle">Contact Number</th>
+                            <th class="align-middle">CNIC</th>
+                            <th class="align-middle">Update</th>
+                            <th class="align-middle">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/BuildingDetail"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/DemandDraft"> Previous </a>
+                    
+                </div>
+                
+            </div>
+
+
+
+
+        </div>
+
+
+    }
+    @{
+        if (TempData["CNICError"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["CNICError"].ToString()")</script>
+        }
+        if (TempData["Exception"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString()")</script>
+        }
+        if (TempData["Success"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+        }
+    }
+    
+                <script>
+    
+                    $(document).ready(function () {
+                        $("#ownertable").on("click", "#btn_delete", function (e) {
+                            e.preventDefault();
+                            var id = $(this).attr("data-owner-id");
+                            $.ajax({
+                                url: "../useraccount/DeleteOwnerInfo?id=" + id,
+                                method: "Get",
+                                success: function (data) {
+                                    table.ajax.reload();
+                                    toastr.success(data.responseText);
+                                }
+                            });
+                        });
+                        var table = $("#ownertable").DataTable({
+                            "ordering": false,
+                            ajax: {
+                                url: "../UserAccount/COwnerDataTableViewer",
+                                dataSrc: ""
+                            },
+                            columns: [
+                                {
+                                    data: "owner_name"
+                                },
+                                {
+                                    data: "contact"
+                                },
+                                {
+                                    data: "cnic"
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        return '<a class="btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall" id="btn_update" href="../UserAccount/CollegeOwnerUpdate?id='+row.Id+'" data-owner-id="' + row.Id + '" >Update</a>'
+                                    }
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        return '<button class="btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall" id="btn_delete" data-owner-id="' + row.Id + '" >Delete</button>'
+                                    }
+                                }
+                            ]
+                        });
+                    });
+        </script>
+</body>
+
+
+</html>
+

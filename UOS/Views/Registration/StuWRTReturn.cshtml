@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "StuWRTReturn";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+
+<div class="row table-responsive table-responsive-sm mx-auto">
+    <table id="table" class="w-100 table table-hover nowrap table-condensed table-sm">
+        <thead class="bg-primary1">
+            <tr class="label text-white" style="height:40px;">
+                <td class="align-middle">Name</td>
+                <td class="align-middle">CNIC</td>
+                <td class="align-middle">Program</td>
+                <td class="align-middle">Session</td>
+                <td class="align-middle">Roll no</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+</div>
+
+
+<script src="~/Scripts/toastr.js"></script>
+@{
+    if (!string.IsNullOrEmpty(ViewBag.messageshow))
+    {
+        <script type="text/javascript">toastr.success(@ViewBag.messageshow)</script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.ApplicationIdNotFound))
+    {
+        <script type="text/javascript">toastr.success(@ViewBag.ApplicationIdNotFound)</script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Exception))
+    {
+        <script type="text/javascript">toastr.success(@ViewBag.Exception)</script>
+    }
+}
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            
+            $("#table").DataTable({
+                ajax: {
+                    url: "../Registration/dtblReturnStudents?returnid=+@TempData["ReturnID"].ToString()+",
+                    dataSrc: ""
+                },
+                columns: [
+                   {
+                       data: "st_name"
+                   },
+                   {
+                       data: "st_cinc"
+                   },
+                   {
+                       data: "program_Desc"
+                   },
+                   {
+                       data: "prog_session"
+                   },
+                   {
+                       data: "roll_number"
+                   }
+
+                ]
+            });
+
+        });
+    </script>
+}

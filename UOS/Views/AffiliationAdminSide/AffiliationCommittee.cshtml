@@ -1,0 +1,220 @@
+﻿@model UOS.Models.AffiliationCommitteeMember
+@{
+    ViewBag.Title = "AffiliationCommittee";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+<link href="~/Content/toastr.css" rel="stylesheet" />
+<script src="~/Scripts/toastr.js"></script>
+   
+       <div class="container">
+    @using (Html.BeginForm("CreateCommitteeMember", "AffiliationAdminSide"))
+    {
+        <div class="row ">
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Name, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.ACMember.Name, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Name)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.CNIC, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.ACMember.CNIC, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.CNIC)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Cell, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.ACMember.Cell, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Cell)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Designation, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.ACMember.Designation, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Designation)
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.Department, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.ACMember.Department, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.Department)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ACMember.com_designation_ID, new { @class = "form-check-label  label" })
+                @Html.DropDownListFor(m => m.ACMember.com_designation_ID, new SelectList(Model.AsMember, "Id", "Designation"), new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ACMember.com_designation_ID)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.UserName, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.UserName)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.Email, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            
+
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.Password, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.Password, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-check-label  label" })
+                @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </div>
+            <div class="col-md-9 col-sm-6"><button class="btn btn-primary btn-rounded mt-md-4 mt-sm-0 float-right btn-sm">Add New Member</button></div>
+        </div>
+    }
+
+    @{
+        if (TempData["ModelState"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["ModelState"].ToString()")</script>
+        }
+
+        if (TempData["CreatedSuccessfully"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["CreatedSuccessfully"].ToString()")</script>
+        }
+
+        if (TempData["UserCreateError"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["UserCreateError"].ToString()")</script>
+        }
+
+        if (TempData["UpdatedSuccessfully"] != null)
+        {
+            <script type="text/javascript">toastr.success("@TempData["UpdatedSuccessfully"].ToString()")</script>
+        }
+
+        if (TempData["UserNotExist"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["UserNotExist"].ToString()")</script>
+        }
+
+        if (TempData["Exception"] != null)
+        {
+            <script type="text/javascript">toastr.error("@TempData["Exception"].ToString()")</script>
+        }
+    }
+
+    <div class="table-responsive">
+        <table id="affcommittee" class="w-100 table table-hover nowrap table-condensed table-sm">
+            <thead class="bg-primary1">
+                <tr class="label text-white" style="height:40px;">
+                    <td class="align-middle">Name      </td>
+                    <td class="align-middle">Department</td>
+                    <td class="align-middle">Designation</td>
+                    <td class="align-middle">AS        </td>
+                    <td class="align-middle"> CNIC    </td>
+                    <td class="align-middle"> Cell     </td>
+                    <td class="align-middle"> status  </td>
+                    <td class="align-middle"> Update   </td>
+                    <td class="align-middle"> Active   </td>
+                    <td class="align-middle"> Inactive </td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+@Scripts.Render("~/Scripts/jqueryval")
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var dataTable = $("#affcommittee").DataTable({
+                ajax: {
+                    url: "../AffiliationAdminSide/ACDataTableViewer",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "Name"
+                    },
+                    {
+                        data: "Department"
+                    },
+                    {
+                        data: "Designation"
+                    },
+                    {
+                        data: "As_Com_Designation"
+                    },
+                    {
+                        data: "CNIC"
+                    },
+                    {
+                        data: "Cell"
+                    },
+                    {
+                        render: function (data, type, row) {
+
+                            if (row.Status === 'Active')
+                            {
+                                return "Active";
+                            }
+                            else
+                                return "Inactive";
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return '<button class="btn bg-update btn-rounded btn-sm py-0 px-2 vsmall text-white" id="btnUpdateMember" data-member-id="' + row.ID + ',' + row.UserId + '" >Edit</button>';
+                        }
+                    },
+                     {
+                         render: function (data, type, row) {
+                             return '<button class="btn btn-success btn-rounded btn-sm py-0 px-2 vsmall" id="btnActiveMember" data-member-id="' + row.ID + ',' + row.UserId + '" >Active</button>';
+                         }
+                     },
+                    {
+                        render: function (data, type, row) {
+                            return '<button class="btn btn-secondary btn-rounded btn-sm py-0 px-2 vsmall" id="btnInactiveMember" data-member-id="' + row.ID + ',' + row.UserId + '" >InActive</button>';
+                        }
+                    }
+                ]
+            });//datatables end here
+
+            $(".row").on("click", "#btnUpdateMember", function () {
+                var memberId = $(this).attr("data-member-id");
+                var button = $(this);
+                var status = button.parent().parent().children().eq(6).html();
+                if (status == "Active")
+                    $(location).attr('href', '../AffiliationAdminSide/EditCommitteeMember?id=' + memberId);
+                else if (status == "Inactive")
+                    alert("InActive Can Not Be Edited");
+            });
+            $(".row").on("click", "#btnActiveMember", function () {
+                var memberId = $(this).attr("data-member-id");
+                var button = $(this);
+                var status = button.parent().parent().children().eq(6).html();
+                if (status == "Inactive")
+                    $(location).attr('href', '../AffiliationAdminSide/ActiveMember?id=' + memberId);
+                else if (status == "Active")
+                    toastr.error("Member Is Already Active");
+            });
+            $(".row").on("click", "#btnInactiveMember", function () {
+                var memberId = $(this).attr("data-member-id");
+                var button = $(this);
+                var status = button.parent().parent().children().eq(6).html();
+                if (status == "Active")
+                    $(location).attr('href', '../AffiliationAdminSide/InactiveMember?id=' + memberId);
+                else if (status == "Inactive")
+                    toastr.error("Member Is Already InActive");
+                    
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,67 @@
+﻿@model UOS.Models.UserClasses.CollegeOwner
+@{
+    ViewBag.Title = "CollegeOwnerUpdate";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>CollegeOwnerUpdate Form</title>
+</head>
+<body class=" form-control-sm">
+    @using (Html.BeginForm("CollegeOwner", "UserAccount"))
+    {
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-md-9 col-lg-7 mx-auto">
+                    <div class="card card-signin my-5">
+                        <div class="card-body">
+                            <h3 class="card-title text-center" style="font-weight:600;">College Owner Update</h3>
+                            <hr class="my-4" />
+                            <div class="form-signin">
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.owner_name, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.owner_name, new { @class = "form-control form-control-sm" })
+                                        @Html.ValidationMessageFor(reg => reg.owner_name)
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.cnic, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.cnic, new { @class = "form-control form-control-sm" })
+                                        @Html.ValidationMessageFor(reg => reg.cnic)
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        @Html.LabelFor(reg => reg.contact, new { @class = "form-check-label label" })
+                                        @Html.TextBoxFor(reg => reg.contact, new { @class = "form-control form-control-sm" })
+                                        @Html.ValidationMessageFor(reg => reg.contact)
+                                    </div>
+                                  
+                                    @Html.HiddenFor(reg => reg.Id)
+                                </div>
+
+
+                                <button class="btn btn-primary btn-block text-uppercase mt-4">Update</button>
+                                <hr class="my-4" />
+
+                                <a class="d-block text-center mt-2" href="../UserAccount/CollegeOwner">Back</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+    }
+</body>
+
+</html>
+

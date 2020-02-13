@@ -1,0 +1,137 @@
+﻿@model UOS.Models.UserClasses.LibraryOtherDetails
+@{
+    ViewBag.Title = "LibraryOtherDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body class="container-fluid bg-light form-control-sm ">
+   
+
+    <div class="container bg-white " style="padding:20px;">
+        <h6 class="mt-2">STATEMENT OF LIBRARY OTHER DETAILS</h6>
+        <hr class="my-3" />
+        @using (Html.BeginForm("LibraryOtherDetails", "UserAccount"))
+        {
+            <div class="row">
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(m => m.item, new { @class = "form-check-label label" })
+                    @Html.DropDownListFor(m => m.item, new SelectList(Model.ItemDD, "Item_Name", "Item_Name"), new { @class = "form-control form-control-sm" })
+                </div>
+                <div class="form-group col-md-2 col-sm-6">
+                    @Html.LabelFor(reg => reg.quantity, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.quantity, new { @class = "form-control form-control-sm", @required = "true", @placeholder = "No.of Item", @type = "number" })
+                    @Html.ValidationMessageFor(reg => reg.quantity)
+                </div>
+                <div class="form-group col-md-4 col-sm-6">
+                    @Html.LabelFor(reg => reg.remarks, new { @class = "form-check-label label" })
+                    @Html.TextBoxFor(reg => reg.remarks, new { @class = "form-control form-control-sm" ,@required = "true", @placeholder = "Add Remarks About Item"})
+                    @Html.ValidationMessageFor(reg => reg.quantity)
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+                </div>
+            </div>
+            <hr class="my-3" />
+            <div class="row table-responsive table-responsive-sm m-auto">
+                <table id="othertable" class="w-100 table table-hover nowrap table-condensed table-sm">
+                    <thead class="bg-primary ">
+                        <tr class="label text-white" style="height:40px;">
+                            <th class="align-middle">Name</th>
+                            <th class="align-middle">Quantity</th>
+                            <th class="align-middle">Remarks</th>
+                            <th class="align-middle">Update</th>
+                            <th class="align-middle">Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <hr class="my-3" />
+
+        }
+            <div class="row my-3">
+                <div class="col-md-12">
+@using (Html.BeginForm("DownloadLibearyDetail", "UserAccount"))
+{
+                    <button class="btn btn-primary btn-rounded  mt-2 float-right btn-sm"> Download Form After Finalizing This Form </button>
+}  </div>
+            </div>
+            <hr class="my-3" />
+            <div class="row">
+                <div class="col-md-12">
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/Labortary"> Next </a>
+                    <a class="btn btn-primary btn-rounded  mt-2 m-2 float-right btn-sm" href="../UserAccount/LibraryDetails"> Previous </a>
+
+                </div>
+
+            </div>
+
+
+
+        
+    </div>
+</body>
+
+@{
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+    if (TempData["Exception"] != null)
+    {
+        <script type="text/javascript">toastr.error("@TempData["Exception"].ToString()")</script>
+    }
+}
+
+  
+
+            @section scripts{
+                <script>
+                    $(document).ready(function () {
+                        $("#othertable").on("click", "#btn_delete", function (e) {
+                            e.preventDefault();
+                            var id = $(this).attr("data-lib-id");
+                            $.ajax({
+                                url: "../UserAccount/RemoveOtherDetails?id=" + id,
+                                type: "GET",
+                                success: function (data) {
+                                    otherstable.ajax.reload();
+                                    toastr.success(data.responseText);
+                                }
+                            });
+                        });
+
+                        var otherstable = $("#othertable").DataTable({
+                            "ordering": false,
+                            ajax: {
+                                url: "../UserAccount/LOtherDetailDataTableViewer",
+                                type: "GET",
+                                dataType: "json",
+                                dataSrc: ""
+                            },
+                            columns: [
+                                {
+                                    data: "Name"
+                                },
+                                {
+                                    data: "Quantity"
+                                },
+                                {
+                                    data: "Remarks"
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        return "<a class='btn bg-warning text-white btn-rounded btn-sm py-0 px-2 vsmall' href='../UserAccount/LibraryOtherDetailsUpdate?id="+row.ID+"' data-lib-id='" + row.ID + "' id='btn_update' >Update</a>"
+                                    }
+                                },
+                                {
+                                    render: function (data, type, row) {
+                                        return "<button class='btn bg-delete text-white btn-rounded btn-sm py-0 px-2 vsmall' data-lib-id='" + row.ID + "' id='btn_delete' >Remove</button>"
+                                    }
+                                }
+                            ]
+                        });
+                    });
+                </script>
+            }

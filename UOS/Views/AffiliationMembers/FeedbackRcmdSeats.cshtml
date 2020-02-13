@@ -1,0 +1,213 @@
+﻿@model UOS.Models.AffiliationMembres.ComFeedbackRcmdSeats
+@{
+    ViewBag.Title = "FeedbackRcmdSeats";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Feedback</title>
+
+</head>
+<body class="container-fluid bg-light form-control-sm">
+    @using (Html.BeginForm("FeedbackRcmdSeats", "AffiliationMembers"))
+    {
+        <div class="container bg-white " style="padding: 20px 20px 0px;">
+
+            <div class="row">
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(m => m.InstituteId, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.InstituteId, new SelectList(Model.instNames, "instituteID", "instituteName"), "------Select Institute------", new { @class = "form-control form-control-sm input-sm small ", @id = "ddInstitute", })
+                </div>
+
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(m => m.courseid, new { @class = "form-check-label  label" })
+                    @Html.DropDownListFor(m => m.courseid, new SelectList(Model.CourseName, "CourseId", "CourseDesc"), new { @class = "form-control form-control-sm input-sm small ", @id = "ddlcourse" })
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+                    @Html.LabelFor(m => m.seatDemanded, new { @class = "form-check-label  label" })
+                    @Html.TextBoxFor(m => m.seatDemanded, new { @readonly = true, @class = "form-control form-control-sm", @id = "txtDemandseats" })
+                </div>
+                <div class="form-group col-md-3 col-sm-6">
+
+                    @Html.LabelFor(m => m.seatRecommanded, new { @class = "form-check-label  label" })
+                    @Html.TextBoxFor(m => m.seatRecommanded, new { @class = "form-control form-control-sm", @id = "txtRecommandSeats" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <input type="submit" name="submit" class="btn btn-primary btn-rounded mt-md-2 mt-sm-0 float-right btn-sm" />
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <div class="container bg-white " style="padding:5px 20px 20px;">
+        <hr class="my-3" />
+        <div class="row table-responsive table-responsive-sm m-auto">
+            <table id="dtblRecomndSeatst" class="w-100 table table-hover nowrap table-condensed table-sm ">
+                <thead class="bg-primary ">
+                    <tr class="label text-white " style="height:40px;">
+                        <td class="align-middle">Institute Name</td>
+                        <td class="align-middle">Program Name</td>
+                        <td class="align-middle">Category</td>
+                        <td class="align-middle">Demanded Seats</td>
+                        <td class="align-middle">Recommanded Seats</td>
+                        <td class="align-middle">IDRecommendedTablr</td>
+                    </tr>
+                </thead>
+                <tbody class="text-sm-left"></tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+
+    @{
+
+        if (TempData["Message_string"] != null)
+        {
+            <script type="text/javascript"> toastr.success("@TempData["Message_string"].ToString()")</script>
+        }
+    }
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    @section scripts{
+        <script>
+
+            $('#ddInstitute').change(function () {
+                var temp = $("#ddInstitute option:selected").text();
+                if (temp === "------Select Program------") {
+
+                }
+                else {
+                    getCourseWRTinstitute();
+                    var DataTable = $("#dtblRecomndSeatst").DataTable()
+                    DataTable.destroy();
+                    pop_recomanded_seats();
+                }
+            });
+            $('#ddlcourse').change(function () {
+                getDemandedSeatsWRTcourse();
+            });
+
+            // Get demanded seats with respect to selected course
+
+
+            function getDemandedSeatsWRTcourse() {
+
+                var temp = $("#ddlcourse option:selected").text();
+                if (temp === "------Select Program------") {
+                    $("#txtDemandseats").val("");
+                }
+                else {
+                    var instId = $("#ddInstitute").val();
+                    var programid = $("#ddlcourse").val();
+
+                    var val = instId + "," + programid
+                    $.ajax
+                    ({
+                        url: '../AffiliationMembers/GetDemandedSeats?val=' + val,
+                        type: 'GET',
+                        success: function (result) {
+                            $("#txtDemandseats").html("");
+                            $.each($.parseJSON(result), function (i, city) {
+
+                                $("#txtDemandseats").val(city.No_Of_Seat);
+                            });
+                        },
+                        error: function () {
+                            toastr.error("Something went wrong..");
+                        },
+                    });
+                }
+
+
+            }
+            // get courses with respect to institute
+            function getCourseWRTinstitute() {
+                var stateId = $("#ddInstitute").val();
+                $.ajax
+                ({
+                    url: '../AffiliationMembers/GetCourses',
+                    type: 'POST',
+                    datatype: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        stateId: +stateId
+                    }),
+                    success: function (result) {
+                        $("#ddlcourse").html("");
+                        $("#ddlcourse").append($('<option></option>').html("------Select Program------"))
+                        $.each($.parseJSON(result), function (i, city) {
+                            $("#ddlcourse").append($('<option></option>').val(city.program_id).html(city.Program_Desc))
+                        })
+                    },
+                    error: function () {
+                        toastr.error("Something went wrong..");
+                    },
+                });
+            }
+
+
+            //$(document).ready(function () {
+            //    pop_recomanded_seats();
+            //});
+
+
+            function pop_recomanded_seats() {
+                $(document).ready(function () {
+                    var id = $('#ddInstitute').val();
+                    var DataTable = $("#dtblRecomndSeatst").DataTable({
+
+                        "proccessing": true,
+                        "serverSide": true,
+                        "ajax": {
+                            "url": "../AffiliationMembers/Pop_recommed_seats_dtbl?instituteID=" + id,
+                            "type": "POST",
+                            "datatype": "json",
+                            "dataSrc": ""
+                        },
+                        "columnDefs": [
+                            {
+                                "targets": 5,
+                                "visible": false,
+                                "searchable": false
+                            }
+                        ],
+
+                        "columns": [
+                            {
+                                "data": "institute_Name"
+                            },
+                            {
+                                "data": "Program_Name"
+                            },
+                            {
+                                "data": "Program_apply_Category"
+                            },
+                            {
+                                "data": "No_Of_Seat"
+                            },
+                            {
+                                "data": "Recmonded_seats"
+                            },
+                            {
+                                "data": "ID_recmonded_table"
+                            }
+
+                        ]
+                    });
+                });
+            }
+
+
+
+
+
+
+        </script>
+    }
+    </body>
+</html>
