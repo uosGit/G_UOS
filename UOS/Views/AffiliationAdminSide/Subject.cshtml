@@ -1,0 +1,47 @@
+﻿@model UOS.Models.CommonInitials.Subject
+@{
+    ViewBag.Title = "Subject";
+    Layout = "~/Views/Shared/initial_layout.cshtml";
+}
+
+<div class="container bg-white" style="padding:20px;">
+    <h6 class="mt-2">Add Subject</h6>
+    <hr class="my-3" />
+    @using (Html.BeginForm("subject", "CommonInitials"))
+    {
+        <div class="row">
+
+           
+            <div class="form-group col-md-4 col-sm-6">
+                @Html.LabelFor(reg => reg.sbjct, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(reg => reg.sbjct, new { @class = "form-control form-control-sm", @placeholder = "Subject", @required = "true" })
+                @Html.ValidationMessageFor(reg => reg.sbjct)
+            </div>
+
+            <div class="form-group col-md-8 col-sm-6">
+                <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Add </button>
+            </div>
+
+
+
+        </div>
+    }
+    <hr class="my-3" />
+    <div class="row table-responsive table-responsive-sm m-auto">
+        <table class="w-100 table table-hover nowrap table-condensed table-sm">
+            <thead class="bg-primary ">
+                <tr class="label text-white" style="height:40px;">
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+

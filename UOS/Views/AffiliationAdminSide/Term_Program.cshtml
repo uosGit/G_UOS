@@ -1,0 +1,97 @@
+﻿@model UOS.Models.CommonInitials.Term_Program
+@{
+    ViewBag.Title = "Term_Program";
+    Layout = "~/Views/Shared/_layout_reg.cshtml";
+}
+
+
+
+
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<div class="container bg-white " style="padding:20px;">
+    <h6 class="mt-2">Term Program</h6>
+    <hr class="my-3" />
+    @using (Html.BeginForm("Term_Program", "CommonInitials"))
+    {
+        <div class="row">
+
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(reg => reg.start_admission, new { @class = "form-check-label label " })
+                @Html.TextBoxFor(reg => reg.start_admission, new { @class = "form-control datepicker form-control-sm", @id = "DTP_SA" })
+                @Html.ValidationMessageFor(reg => reg.start_admission)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(reg => reg.close_admission, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(reg => reg.close_admission, new { @class = "form-control datepicker form-control-sm", @id = "DTP_EA" })
+                @Html.ValidationMessageFor(reg => reg.close_admission)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(reg => reg.adm_fee_deadline, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(reg => reg.adm_fee_deadline, new { @class = "form-control datepicker form-control-sm", @id = "DTP_FL" })
+                @Html.ValidationMessageFor(reg => reg.adm_fee_deadline)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(reg => reg.r_start_date, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(reg => reg.r_start_date, new { @class = "form-control datepicker form-control-sm", @id = "DTP_SR" })
+                @Html.ValidationMessageFor(reg => reg.r_start_date)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(reg => reg.r_close_date, new { @class = "form-check-label label" })
+                @Html.TextBoxFor(reg => reg.r_close_date, new { @class = "form-control datepicker form-control-sm", @id = "DTP_RE" })
+                @Html.ValidationMessageFor(reg => reg.r_close_date)
+            </div>
+            <div class="form-group col-md-3 col-sm-6">
+                @Html.LabelFor(reg => reg.Year_ID, new { @class = "form-check-label label " })
+                @Html.DropDownListFor(reg => reg.Year_ID, new SelectList(Model.Yeardd, "ID", "Aff_Year"), new { @class = "form-control form-control-sm", @required = "true", @id = "Aff_Year" })
+                @Html.ValidationMessageFor(reg => reg.Year_ID)
+            </div>
+
+            <div class="form-group col-md-3 col-sm-6">
+                <button class="btn btn-primary btn-rounded mt-4 float-right btn-sm"> Submit </button>
+            </div>
+
+            </div>
+    }
+    <hr class="my-3" />
+    <div class="row table-responsive table-responsive-sm m-auto">
+        <table class="w-100 table table-hover nowrap table-condensed table-sm">
+            <thead class="bg-primary ">
+                <tr class="label text-white" style="height:40px;">
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                    <th class="align-middle"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+        $('#DTP_SA').datepicker({
+            uiLibrary: 'bootstrap4', format: 'dd-mmm-yyyy'
+        });
+        $('#DTP_EA').datepicker({
+            uiLibrary: 'bootstrap4', format: 'dd-mmm-yyyy'
+        });
+
+        $('#DTP_FL').datepicker({
+            uiLibrary: 'bootstrap4', format: 'dd-mmm-yyyy'
+        });
+
+        $('#DTP_SR').datepicker({
+            uiLibrary: 'bootstrap4', format: 'dd-mmm-yyyy'
+        });
+
+        $('#DTP_RE').datepicker({
+            uiLibrary: 'bootstrap4', format: 'dd-mmm-yyyy'
+        });
+    </script>
+}

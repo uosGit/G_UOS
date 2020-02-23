@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "ViewMembersDetail";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+
+<table id="table">
+    <thead>
+        <tr>
+            <th>Committee Member</th>
+            <th>Recommended Seats</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#table").DataTable({
+                ajax: {
+                    url: "../AffiliationAdminSide/MembersDetailDataTableViewer",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+                       data:"Name"
+                    },
+                    {
+                        data: "Recmonded_seats"
+                    }
+                ]
+            });
+        });
+    </script>
+}
