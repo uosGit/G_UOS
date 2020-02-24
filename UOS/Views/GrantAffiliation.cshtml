@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "GrantAffiliation";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+<div class="row table-responsive table-responsive-sm mx-auto">
+    <table id="table" class="w-100 table table-hover nowrap table-condensed table-sm">
+        <thead class="bg-primary1">
+            <tr class="label text-white" style="height:40px;">
+                <td class="align-middle">Programs         </td>
+                <td class="align-middle">Demanded Seats   </td>
+                <td class="align-middle">Recommended Seats</td>
+                <td class="align-middle">Granted Seates</td>
+                <td class="align-middle">View             </td>
+                <td class="align-middle">Grant            </td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div class="col-md-12">
+        <button id="grant" class="btn btn-primary btn-rounded px-3 btn-sm">Grant</button>
+</div>
+</div>
+@{
+    if (!string.IsNullOrEmpty(ViewBag.DDImageNull))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.DDImageNull")</script>
+    }
+    if (TempData["Success"] != null)
+    {
+        <script type="text/javascript">toastr.success("@TempData["Success"].ToString()")</script>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Exception))
+    {
+        <script type="text/javascript">toastr.error("@ViewBag.Exception ")</script>
+    }
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+       
+            $("#grant").click(function (e) {
+                e.preventDefault();
+                var model=[]
+                $("#table").find('input[type="checkbox"]:checked').each(function (index, rowId) {
+                    var temp = $(this).parent().parent();
+                    var grantedseats = temp.find("#txt_granted").val();
+                    var recommendedseats = table.row(temp).data().RecommendedSeats;
+                    console.log(recommendedseats);
+                    var programId = $(this).val();
+                    var obj = {
+                        ProgramId:programId,
+                        GrantedSeats: grantedseats,
+                        RecommendedSeats: recommendedseats
+                    }
+                    model.push(obj);
+                });
+                model = JSON.stringify(model);
+                $.ajax({
+                    url: "../AffiliationAdminSide/GrantNow",
+                    method: "POST",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: model,
+                    success: function (response) {
+                        toastr.success(response.responseText);
+                        alert(response.responseText);
+                        $(location).attr('href', "../AffiliationAdminSide/UploadVCScan");
+                    }
+                });
+            });
+            var table = $("#table").DataTable({
+                ajax: {
+                    url: "../AffiliationAdminSide/GAffiliatonDataTableViewer",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+                        data: "ProgramName"
+                    },
+                    {
+                        data: "DemandedSeats"
+                    },
+                    {
+                        data:"RecommendedSeats"
+                    },
+                    {
+                        render:function(d,t,row){
+                            return '<input type="text" name="grantedseats" id="txt_granted" value="'+ row.GrantedSeats+'" />'
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return "<a class='btn btn-primary btn-rounded btn-sm py-0 px-2 vsmall' href='../AffiliationAdminSide/ViewMembersDetail?id=" + row.ProgramId + "'>View</a>"
+                        }
+                    },
+                    {
+                        render: function (data, type, row) {
+                            return "<input type='checkbox' id='check' value='" + row.ProgramId + "' />"
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "ViewFeedBack";
+    Layout = "~/Views/Shared/_LayoutAffadmin.cshtml";
+}
+
+<table id="table" class="table table-condensed table-bordered">
+    <thead>
+        <tr>
+            <th>Member Name</th>
+            <th>As Designation</th>
+            <th>Description</th>
+            <th>Marks</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<a class="btn btn-primary btn-rounded px-3 btn-sm" href="../AffiliationAdminSide/Grant">Back</a>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#table").DataTable({
+                ajax: {
+                    url: "../AffiliationAdminSide/VFeedBackDataTableViewer",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+                        data:"Member_Name"
+                    },
+                    {
+                        data:"As_Designation"
+                    },
+                    {
+                        data:"obs_desc"
+                    },
+                    {
+                        data:"obs_marks"
+                    },
+                    {
+                        data: "Feed_back_Date"
+                    }
+                ]
+            });
+        });
+    </script>
+}
