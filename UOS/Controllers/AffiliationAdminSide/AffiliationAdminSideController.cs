@@ -671,6 +671,206 @@ namespace UOS.Controllers.AffiliationAdminSide
 
             return RedirectToAction("Register", "AffiliationAdminSide");
         }
+  public ActionResult GAffiliatonDataTableViewer()
+        {
+            int id = 0;
+            var userid = User.Identity.GetUserId();
+            var claims = UserManager.GetClaims(userid);
+            foreach (var claim in claims)
+            {
+                if (claim.Type == "ApplicationId")
+                    id = Convert.ToInt32(claim.Value);
+            }
+            //start formulae here
+
+
+                int count = 0;
+                var dtbl = db.BI_affi_admin_pop_apply_programs(id).ToList();
+                List<GrantSeat> listobj = new List<GrantSeat>();
+                
+                foreach (var item in dtbl)
+                {
+                    count++;
+                }
+                int[] demandseats = new int[count];
+                string[] programnames = new string[count];
+                int[] programID = new int[count];
+                int ii=0;
+                foreach (var item in dtbl)
+                {
+                    programID[ii] = Convert.ToInt32(item.Program_ID);
+                    demandseats[ii] = Convert.ToInt32(item.No_Of_Seat);
+                    programnames[ii] = item.Program_Desc;
+                    ii++;
+                }
+
+                for(int l=0; l<count; l++ )
+                {
+                    var dtbl1 = db.BI_pop_recmond_seates(id, programID[l]).ToList();
+                    GrantSeat objgrant = new GrantSeat();
+                    int count2 = 0;
+                    foreach (var item in dtbl1)
+                    {
+                        count2++;
+                    }
+                    int jc = count2;
+                    if (jc > 0)
+                    {
+                        
+                        int length = jc + 1;
+
+                        int[] Seats = new int[length];
+                        int[] Reasult = new int[length];
+                        int[] periority = new int[length];
+                        int[] perioritySecond = new int[length];
+
+                        
+                        int q=1;
+                        foreach (var item in dtbl1)
+                        {
+                            Seats[q] = Convert.ToInt32(item.Recmonded_seats.ToString());
+                            periority[q] = Convert.ToInt32(item.periority);
+                            Reasult[q] = 0;
+                            perioritySecond[q] = 0;
+                            q++;
+                        }
+
+                        for (int i = 1; i < length; i++)
+                        {
+                            for (int j = i; j < length; j++)
+                            {
+                                if (Seats[i] == Seats[j])
+                                {
+                                    Reasult[i] = Reasult[i] + 1;
+                                    perioritySecond[i] = perioritySecond[i] + periority[j];
+                                }
+                            }
+                        }
+
+                        int index = get_max(Reasult);
+
+                        if (Reasult[index] == 1)
+                        {
+                            int varriable = 0;
+                            for (int i = 1; i < length; i++)
+                            {
+                                varriable = varriable + Seats[i];
+
+                            }
+                            varriable = varriable / (length - 1);
+                            objgrant.ProgramId = programID[l];
+                            objgrant.RecommendedSeats = Convert.ToInt32(return_round_figure(Convert.ToInt16(varriable.ToString())).ToString());
+                            objgrant.GrantedSeats = Convert.ToInt32(return_round_figure(Convert.ToInt16(varriable.ToString())).ToString());
+                            objgrant.DemandedSeats = demandseats[l];
+                            objgrant.ProgramName = programnames[l];
+                            //DGV_apply_porgrams.Rows[l].Cells[4].Text = return_round_figure(Convert.ToInt16(varriable.ToString())).ToString();
+                            //DGV_apply_porgrams.Rows[l].Cells[5].Text = return_round_figure(Convert.ToInt16(varriable.ToString())).ToString();
+                        }
+                        else if (Reasult[index] > (jc / 2))
+                        {
+                            objgrant.ProgramId = programID[l];
+                            objgrant.RecommendedSeats = Convert.ToInt32(return_round_figure(Convert.ToInt16(Seats[index].ToString())).ToString());
+                            objgrant.GrantedSeats = Convert.ToInt32(return_round_figure(Convert.ToInt16(Seats[index].ToString())).ToString());
+                            objgrant.DemandedSeats = demandseats[l];
+                            objgrant.ProgramName = programnames[l];
+
+                            //DGV_apply_porgrams.Rows[l].Cells[4].Text = return_round_figure(Convert.ToInt16(Seats[index].ToString())).ToString();
+                            //DGV_apply_porgrams.Rows[l].Cells[5].Text = return_round_figure(Convert.ToInt16(Seats[index].ToString())).ToString();
+                        }
+                        else if (Reasult[index] <= (jc / 2))
+                        {
+                            int periorityIndex = get_max(perioritySecond);
+                            objgrant.ProgramId = programID[l];
+                            objgrant.RecommendedSeats = Convert.ToInt32(return_round_figure(Convert.ToInt16(Seats[periorityIndex].ToString())).ToString());
+                            objgrant.GrantedSeats = Convert.ToInt32(return_round_figure(Convert.ToInt16(Seats[periorityIndex].ToString())).ToString());
+                            objgrant.DemandedSeats = demandseats[l];
+                            objgrant.ProgramName = programnames[l];
+                            
+                            //DGV_apply_porgrams.Rows[l].Cells[4].Text = return_round_figure(Convert.ToInt16(Seats[periorityIndex].ToString())).ToString();
+                            //DGV_apply_porgrams.Rows[l].Cells[5].Text = return_round_figure(Convert.ToInt16(Seats[periorityIndex].ToString())).ToString();
+                        }
+                        else
+                        {
+                            objgrant.ProgramId = programID[l];
+                            objgrant.RecommendedSeats = -1;
+                            objgrant.GrantedSeats = -1;
+                            objgrant.DemandedSeats = demandseats[l];
+                            objgrant.ProgramName = programnames[l];
+
+                            //DGV_apply_porgrams.Rows[l].Cells[4].Text = "-1";
+                            //DGV_apply_porgrams.Rows[l].Cells[5].Text = "-1";
+                        }
+                    }
+                    else
+                    {
+                        objgrant.ProgramId = programID[l];
+                        objgrant.RecommendedSeats = 0;
+                        objgrant.GrantedSeats = 0;
+                        objgrant.DemandedSeats = demandseats[l];
+                        objgrant.ProgramName = programnames[l];
+                        //DGV_apply_porgrams.Rows[l].Cells[4].Text = " ";
+                        //DGV_apply_porgrams.Rows[l].Cells[5].Text = " ";
+                    }
+                    listobj.Add(objgrant);
+                }
+
+                return Json(listobj, JsonRequestBehavior.AllowGet);
+        }
+
+        int return_round_figure(int value)
+        {
+                if ((value % 10) < 5 && (value % 10) > 0)
+                {
+                    value = value - (value % 10);
+                }
+                else if ((value % 10) < 10 && (value % 10) > 4)
+                {
+                    value = value - (value % 10);
+                    value = value + 10;
+                }
+            
+            return value;
+        }
+
+        int get_max(int[] temp)
+        {
+            int max = 1;
+            for (int i = 1; i < temp.Length; i++)
+            {
+                if (temp[i] > temp[max])
+                {
+                    max = i;
+                }
+            }
+            return max;
+        }
+
+
+        public ActionResult ViewMembersDetail(int id)
+        {
+            var userid = User.Identity.GetUserId();
+            UserManager.AddClaim(userid, new Claim("ProgramId", id.ToString()));
+            return View();
+        }
+
+        public ActionResult MembersDetailDataTableViewer()
+        {
+            int appId = 0;
+            int progId = 0;
+            var userid = User.Identity.GetUserId();
+            var claims = UserManager.GetClaims(userid);
+            foreach (var claim in claims)
+            {
+                if (claim.Type == "ProgramId")
+                    progId = Convert.ToInt32(claim.Value);
+                if (claim.Type == "ApplicationId")
+                    appId = Convert.ToInt32(claim.Value);
+            }
+
+
+            var members = db.BI_pop_recmond_seates(appId, progId);
+            return Json(members,JsonRequestBehavior.AllowGet);
+        }
 
 
       }
